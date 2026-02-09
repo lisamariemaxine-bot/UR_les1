@@ -1,32 +1,30 @@
 "use client"
 
-import { useState } from "react"
-import SidebarSlider from "@/components/SidebarSlider"
-import { GiHamburgerMenu } from "react-icons/gi"
+import Link from 'next/link'
 
 export default function GlobalNavbar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
   return (
-    <>
-      {/* Hamburger menu icon button */}
-      <button
-        className="fixed top-4 left-4 z-50 p-2 text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded"
-        onClick={() => setIsSidebarOpen(true)}
-      >
-        <GiHamburgerMenu size={24} />
-      </button>
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-100 border-b shadow-sm shine-animation">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        
+        {/* Logo / titel (optioneel) */}
+        <div className="text-lg font-semibold">
+          MySite
+        </div>
 
-      {/* SidebarSlider component */}
-      <SidebarSlider isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
-        <nav className="flex flex-col space-y-4">
-          <a href="/home" className="hover:underline">Home</a>
-          <a href="/about" className="hover:underline">About</a>
-          <a href="/profect" className="hover:underline">project</a>
-          <a href="/contact" className="hover:underline">Contact</a>
-          <a href="/login" className="hover:underline">Login</a>
-        </nav>
-      </SidebarSlider>
-    </>
+        {/* Horizontale navigatie */}
+        <div className="flex space-x-6">
+          <Link href="/home" className="hover:underline">Home</Link>
+          <Link href="/about" className="hover:underline">About</Link>
+          <Link href="/project" className="hover:underline">Project leperello</Link>
+          <Link href="/project2" className="hover:underline">project BOEM</Link>
+          <Link href="/project3" className="hover:underline">project poster</Link>
+          <Link href="/contact" className="hover:underline">Contact</Link>
+          <Link href="/login" className="hover:underline">Login</Link>
+          
+        </div>
+
+      </div>
+    </nav>
   )
 }

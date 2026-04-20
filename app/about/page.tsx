@@ -1,50 +1,100 @@
+"use client";
+import { useEffect, useState } from "react";
+
+type AboutData = {
+  name: string;
+  bio: string;
+  email: string;
+  websiteText: string;
+  profileImage: string;
+  introLabel: string;
+  tagOne: string;
+  tagTwo: string;
+  textSectionTitle: string;
+  contactTitle: string;
+  portfolioConceptTitle: string;
+  portfolioConcept: string;
+};
+
 export default function AboutPage() {
+  const [about, setAbout] = useState<AboutData>({
+    name: "",
+    bio: "",
+    email: "",
+    websiteText: "",
+    profileImage: "",
+    introLabel: "",
+    tagOne: "",
+    tagTwo: "",
+    textSectionTitle: "",
+    contactTitle: "",
+    portfolioConceptTitle: "",
+    portfolioConcept: "",
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAbout() {
+      try {
+        const res = await fetch("/api/about");
+        if (res.ok) {
+          const data = await res.json();
+          setAbout(data);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchAbout();
+  }, []);
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6 px-4">
-      <h1 className="text-3xl font-bold">About me</h1>
-      <p className="text-gray-700">
-        We are a company dedicated to providing the best solutions for your needs. 
-        Our team is passionate about creating modern, scalable, and user-friendly applications.
-      </p>
-      <ul className="list-disc pl-5 text-gray-700 space-y-2">
-        <li>Innovative technology</li>
-        <li>Professional team</li>
-        <li>Customer satisfaction</li>
-      </ul>
-
-      {/* Flexbox 2 kolommen */}
-      <div className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 mt-8">
-        <div className="flex-1 bg-gray-100 p-4 rounded">
-          <h2 className="font-semibold mb-2">Column 1</h2>
-          <p className="text-gray-700">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
-          </p>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '48px 0 0 0' }}>
+      {/* Bovenste blok */}
+      <div style={{ width: '90vw', maxWidth: 1100, display: 'flex', flexDirection: 'row', padding: 0, marginBottom: 48, boxSizing: 'border-box' }}>
+        {/* Linkerzijde tekst */}
+        <div style={{ flex: 1.2, padding: '48px 0 48px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <div style={{ fontSize: 32, fontWeight: 400, marginBottom: 24, color: '#222', fontFamily: 'inherit', lineHeight: 1.15 }}>
+            {loading ? "About me" : (about.name || "About me")}
+          </div>
         </div>
-        <div className="flex-1 bg-gray-100 p-4 rounded">
-          <h2 className="font-semibold mb-2">Column 2</h2>
-          <p className="text-gray-700">
-            Sed nisi. Nulla quis sem at nibh elementum imperdiet. 
-            Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed.
-          </p>
+        {/* Rechterzijde tekst en beeld */}
+        <div style={{ flex: 1.5, padding: '48px 48px 48px 0', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
+          <div style={{ fontSize: 13, color: '#222', fontWeight: 400, marginBottom: 8 }}>
+            {loading
+              ? "Loading..."
+              : about.bio || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur. Nisi nisl aliquam nunc, eget aliquam massa nisi nec erat. Mauris non erat vitae urna facilisis dictum. Etiam euismod, justo at dictum cursus."}
+          </div>
+          {!loading && about.websiteText ? (
+            <div
+              style={{
+                fontSize: 14,
+                color: '#222',
+                fontWeight: 400,
+                lineHeight: 1.7,
+                padding: '18px 20px',
+                border: '1px solid #e4e4e4',
+                background: '#fafafa',
+                maxWidth: 520,
+                whiteSpace: 'pre-wrap'
+              }}
+            >
+              {about.websiteText}
+            </div>
+          ) : null}
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 16, alignItems: 'flex-start' }}>
+            <img src={about.profileImage || "/Ik.png"} alt="about me" style={{ width: 240, height: 180, objectFit: 'cover', background: '#eee' }} />
+          </div>
+          <div style={{ fontSize: 13, color: '#222', fontWeight: 400, marginTop: 16 }}>
+            {loading
+              ? ""
+              : about.email
+                ? `Contact: ${about.email}`
+                : ""}
+          </div>
         </div>
       </div>
-
-      {/* Flexbox 2 rijen */}
-      <div className="flex flex-col space-y-4 mt-8">
-        <div className="bg-gray-200 p-4 rounded">
-          <h2 className="font-semibold mb-2">Row 1</h2>
-          <p className="text-gray-700">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.
-          </p>
-        </div>
-        <div className="bg-gray-200 p-4 rounded">
-          <h2 className="font-semibold mb-2">Row 2</h2>
-          <p className="text-gray-700">
-            Cras ultricies ligula sed magna dictum porta. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.
-          </p>
-        </div>
-      </div>
+      {/* Onderste blok verwijderd */}
     </div>
-  )
+  );
 }

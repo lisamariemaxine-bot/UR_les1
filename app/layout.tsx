@@ -17,6 +17,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Verberg de navbar op de testpagina
+  const pathname = typeof window !== "undefined" ? window.location.pathname : ""
+  const hideNavbar = pathname.startsWith("/test")
+
   return (
     <html lang="en">
       <head>
@@ -34,13 +38,13 @@ export default function RootLayout({
         </Script>
       </head>
 
-      <body>
+      <body className="bg-white text-black min-h-screen">
         {/* Google Analytics page view tracker */}
         <GoogleAnalyticsTracker />
 
-        <GlobalNavbar />
+        {!hideNavbar && <GlobalNavbar />}
 
-        <div className="p-20 mx-auto mt-10">
+        <div className="p-20 mx-auto mt-10 bg-white">
           {children}
         </div>
 

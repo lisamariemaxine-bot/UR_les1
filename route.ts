@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
@@ -28,9 +28,8 @@ export async function GET() {
   }
 }
 
-import { NextRequest } from 'next/server';
-
-export async function POST(request: NextRequest) {  try {
+export async function POST(request: NextRequest) {
+  try {
     const body = await request.json();
     fs.writeFileSync(DATA_PATH, JSON.stringify(body, null, 2));
     return NextResponse.json({ success: true });

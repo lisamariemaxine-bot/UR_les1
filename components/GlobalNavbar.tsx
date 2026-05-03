@@ -1,56 +1,125 @@
 "use client"
 
-import Link from 'next/link'
+import { useState, useEffect } from "react"
+import SidebarSlider from "@/components/SidebarSlider"
 
 export default function GlobalNavbar() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [menuBgColor, setMenuBgColor] = useState("#FAFAFA")
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsSidebarOpen(false);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
+  const menuLinks = [
+    { label: "Home", href: "/home", code: "00", color: "#FAFAFA" },
+    { label: "About", href: "/about", code: "01", color: "#C3F380" },
+    { label: "Contact", href: "/contact", code: "02", color: "#FF97D0" },
+    { label: "Settings", href: "/settings", code: "ST", color: "#A0C4FF" },
+    { label: "Admin", href: "/admin", code: "AD", color: "#B0B0B0" },
+    { label: "Project 1", href: "/project-1", code: "P1", color: "#FAE170" },
+    { label: "Project 2", href: "/project-2", code: "P2", color: "#D13F13" },
+    { label: "Project 3", href: "/project-3", code: "P3", color: "#7523B4" },
+  ];
+
+  const crossColor = isSidebarOpen ? "#000000" : "#FF97D0";
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white shadow-sm" style={{fontFamily: 'Georgia, Times, serif'}}>
-      <div className="w-full px-8 pr-16 py-4 flex items-center justify-end">
-        
-        {/* Logo / titel verwijderd */}
-
-        {/* Horizontale navigatie gecentreerd */}
-        <div className="flex space-x-6 justify-end">
-          <Link href="/" className="text-black hover:text-gray-700 transition-colors">Home</Link>
-          {/* Test link removed from navigation; page remains available by direct URL. */}
-          <Link href="/about" className="text-black hover:text-gray-700 transition-colors">About</Link>
-          <Link href="/project" className="text-black hover:text-orange-500 transition-colors">Leporello</Link>
-          <Link href="/project2" className="text-black hover:text-cyan-600 transition-colors">Fibonacci</Link>
-          <Link href="/project3" className="text-black hover:text-purple-600 transition-colors">Acoustic Laptop</Link>
-          <Link href="/contact" className="text-black hover:text-gray-700 transition-colors">Contact</Link>
-          <Link
-            href="/admin-user"
-            aria-label="Profile"
-            title="Profile"
-            className="text-white bg-black p-2 rounded hover:bg-red-600 hover:text-white transition-colors inline-flex items-center justify-center"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
-              <path d="M4.5 20C5.6 16.9 8.5 15 12 15C15.5 15 18.4 16.9 19.5 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          </Link>
-          <Link
-            href="/admin"
-            aria-label="Admin"
-            title="Admin"
-            className="text-white bg-black p-2 rounded hover:bg-red-600 hover:text-white transition-colors inline-flex items-center justify-center"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="2.4" stroke="currentColor" strokeWidth="1.7" />
-              <path d="M12 3.6V6.1" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M12 17.9V20.4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M20.4 12H17.9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M6.1 12H3.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M17.9 6.1L16.2 7.8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M7.8 16.2L6.1 17.9" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M17.9 17.9L16.2 16.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <path d="M7.8 7.8L6.1 6.1" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="5.2" stroke="currentColor" strokeWidth="1.4" />
-            </svg>
-          </Link>
+    <>
+      {/* Hamburger / Close Toggle Button */}
+      <button
+        className="fixed top-6 left-6 z-[110] flex items-center group focus:outline-none mix-blend-difference"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        aria-label="Toggle Menu"
+      >
+        <div className="relative w-8 h-6 flex flex-col justify-between overflow-hidden">
+          <span 
+            className={`w-full h-[3px] transition-all duration-500 ease-in-out origin-center ${
+              isSidebarOpen ? 'rotate-45 translate-y-[10.5px]' : 'group-hover:translate-x-2'
+            }`}
+            style={{ backgroundColor: crossColor }}
+          ></span>
+          <span 
+            className={`w-full h-[3px] transition-all duration-300 ease-in-out ${
+              isSidebarOpen ? 'opacity-0 -translate-x-full' : 'group-hover:-translate-x-2'
+            }`}
+            style={{ backgroundColor: crossColor }}
+          ></span>
+          <span 
+            className={`w-full h-[3px] transition-all duration-500 ease-in-out origin-center ${
+              isSidebarOpen ? '-rotate-45 -translate-y-[10.5px]' : 'group-hover:translate-x-1'
+            }`}
+            style={{ backgroundColor: crossColor }}
+          ></span>
         </div>
+      </button>
 
-      </div>
-    </nav>
+      <SidebarSlider isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
+        <div 
+          className="fixed inset-0 w-screen h-screen flex flex-col p-8 md:p-16 uppercase transition-colors duration-700 ease-in-out"
+          style={{ backgroundColor: menuBgColor }}
+        >
+          {/* ESC Button */}
+          <button 
+            onClick={() => setIsSidebarOpen(false)}
+            className="absolute top-6 right-8 font-mono text-[10px] font-bold border-b border-black tracking-tighter hover:bg-black hover:text-white px-2 py-1 transition-all text-black"
+          >
+            CLOSE_SYSTEM [ESC]
+          </button>
+          
+          {/* Menu Header - INDEX veranderd naar MENU en subtitel verwijderd */}
+          <div className="flex justify-between items-end border-b border-black pb-4 mb-8 md:mb-10">
+            <h2 className="font-mono text-xs font-bold tracking-widest text-black">MENU</h2>
+          </div>
+
+          {/* Navigation Links in 2 kolommen */}
+          <nav
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow max-w-5xl"
+            style={{ alignItems: 'start' }}
+          >
+            {menuLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsSidebarOpen(false)}
+                onMouseEnter={() => setMenuBgColor(link.color)}
+                onMouseLeave={() => setMenuBgColor("#FAFAFA")}
+                className="group flex items-center justify-between py-0.5 md:py-1 border-b border-black/10 transition-all duration-300"
+              >
+                <div className="flex items-center gap-8 text-black">
+                  <span className="font-mono text-[10px] opacity-40 group-hover:opacity-100 transition-opacity">
+                    {link.code}
+                  </span>
+                  <span className="text-3xl md:text-5xl lg:text-6xl font-serif italic tracking-tighter leading-none transition-all group-hover:pl-4">
+                    {link.label}
+                  </span>
+                </div>
+                <div className="hidden md:block opacity-0 group-hover:opacity-30 transition-opacity font-mono text-[9px] tracking-widest text-black">
+                  {link.label === 'Project 1' ? 'leporello' :
+                   link.label === 'Project 2' ? 'FIBONACCI' :
+                   link.label === 'Project 3' ? 'Acoustic Laptop' :
+                   ''}
+                </div>
+              </a>
+            ))}
+          </nav>
+
+          {/* Menu Footer */}
+          <div className="mt-auto flex flex-col md:flex-row justify-between items-end gap-4 font-mono text-[10px] border-t border-black pt-8 text-black">
+            <div className="flex flex-col gap-1">
+              <span className="font-bold uppercase tracking-widest">Lisa Marie Van Avermaet</span>
+              <span className="opacity-50 lowercase tracking-tighter">Selected Works / Archive 2026</span>
+            </div>
+            <div className="text-right opacity-50">
+              <span>EST. Hamme, BE</span>
+            </div>
+          </div>
+        </div>
+      </SidebarSlider>
+    </>
   )
 }

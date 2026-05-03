@@ -1,6 +1,6 @@
 import { AppToaster } from "@/components/ui/toast"
 import GlobalNavbar from "@/components/GlobalNavbar"
-import Footer from "@/components/Footer"
+
 
 import Script from "next/script"
 import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker"
@@ -17,10 +17,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Verberg de navbar op de testpagina
-  const pathname = typeof window !== "undefined" ? window.location.pathname : ""
-  const hideNavbar = pathname.startsWith("/test")
-
   return (
     <html lang="en">
       <head>
@@ -38,19 +34,17 @@ export default function RootLayout({
         </Script>
       </head>
 
-      <body className="bg-white text-black min-h-screen">
+      <body>
         {/* Google Analytics page view tracker */}
         <GoogleAnalyticsTracker />
 
-        {!hideNavbar && <GlobalNavbar />}
+        <GlobalNavbar />
 
-        <div className="p-20 mx-auto mt-10 bg-white">
+        <div className="p-20 mx-auto mt-10">
           {children}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0">
-          <Footer />
-        </div>
+
 
         <AppToaster />
       </body>

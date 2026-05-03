@@ -1,14 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-@import "tailwindcss";
-
-html, body {
-  min-height: 100vh;
-  width: 100vw;
-  font-family: 'Georgia, Times, serif';
-  -webkit-tap-highlight-color: transparent;
+html, body, * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><line x1="8" y1="8" x2="24" y2="24" stroke="black" stroke-width="3"/><line x1="24" y1="8" x2="8" y2="24" stroke="black" stroke-width="3"/></svg>') 16 16, auto !important;
 }
+@import "tailwindcss";
 
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
@@ -91,9 +84,6 @@ html, body {
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  /* Modern sans font - Montserrat */
-  --font-geist-sans: 'Montserrat', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
-  --font-heading: 'Syne', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
 }
 
 .dark {
@@ -131,75 +121,10 @@ html, body {
 }
 
 @layer base {
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    background: #fff !important;
-    color: #000 !important;
-    font-family: var(--font-sans, var(--font-geist-sans));
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-
-  h1 {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-  }
-
-  @keyframes shine {
-    0% {
-      background-position: -1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-
-  .shine-animation {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 250, 205, 0.8),
-      transparent
-    );
-    background-size: 1000px 100%;
-    animation: shine 3s infinite;
-  }
-
-  button {
-    background-color: #FFFACD;
-    color: #333;
-    transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-    background-color: #FFE680;
+    @apply bg-background text-foreground;
   }
 }

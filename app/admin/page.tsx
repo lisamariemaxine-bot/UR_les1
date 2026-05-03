@@ -1,557 +1,306 @@
 "use client";
+import React, { useState } from "react";
 
-import { useState, useEffect } from "react";
+// ── Types ────────────────────────────────────────────────────────────────────
 
-type AboutForm = {
-  name: string;
+type Section = "profile" | "settings";
+
+type ProfileData = {
+  firstName: string;
+  lastName: string;
+  username: string;
   bio: string;
   email: string;
-  websiteText: string;
-  profileImage: string;
-  portfolioConcept: string;
-  introLabel: string;
-  tagOne: string;
-  tagTwo: string;
-  textSectionTitle: string;
-  contactTitle: string;
-  portfolioConceptTitle: string;
+  phone: string;
+  location: string;
+  avatar: string;
 };
 
-type FormErrors = {
+type SettingsData = {
+  language: string;
+  timezone: string;
+  emailNotifications: boolean;
+  publicProfile: boolean;
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+const SANS_FONT = { 
+  fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' 
+};
+
+function Field({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+}: {
+  label: string;
   name: string;
-  bio: string;
-  email: string;
-  websiteText: string;
-  profileImage: string;
-  portfolioConcept: string;
-  introLabel: string;
-  tagOne: string;
-  tagTwo: string;
-  textSectionTitle: string;
-  contactTitle: string;
-  portfolioConceptTitle: string;
-};
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}) {
+  return (
+    <div className="relative">
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={label}
+        autoComplete="off"
+        style={SANS_FONT}
+        className="peer h-12 w-full border-b-2 border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition-colors font-bold uppercase tracking-tight"
+      />
+      <label
+        style={SANS_FONT}
+        className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase tracking-[0.2em] font-black transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-black/20 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-black"
+      >
+        {label}
+      </label>
+    </div>
+  );
+}
 
-export default function AdminPage() {
-  const [form, setForm] = useState<AboutForm>({
-    name: "",
-    bio: "",
-    email: "",
-    websiteText: "",
-    profileImage: "",
-    portfolioConcept: "",
-    introLabel: "",
-    tagOne: "",
-    tagTwo: "",
-    textSectionTitle: "",
-    contactTitle: "",
-    portfolioConceptTitle: "",
+function TextAreaField({
+  label,
+  name,
+  value,
+  onChange,
+  rows = 4,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  rows?: number;
+}) {
+  return (
+    <div className="relative">
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={label}
+        rows={rows}
+        style={SANS_FONT}
+        className="peer w-full border-b-2 border-black/10 bg-transparent text-sm text-black placeholder-transparent focus:border-black focus:outline-none transition resize-none font-bold uppercase tracking-tight"
+      />
+      <label
+        style={SANS_FONT}
+        className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase tracking-[0.2em] font-black transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-black/20 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-black"
+      >
+        {label}
+      </label>
+    </div>
+  );
+}
+
+function SaveBar({ onSave, saved }: { onSave: () => void; saved: boolean }) {
+  return (
+    <div className="flex items-center gap-4 pt-4">
+      <button
+        type="button"
+        onClick={onSave}
+        style={SANS_FONT}
+        className="bg-black px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#C3F380] transition-all hover:opacity-80 active:scale-95"
+      >
+        Save changes
+      </button>
+      {saved && (
+        <span style={SANS_FONT} className="text-[10px] text-black/40 uppercase tracking-[0.2em] font-bold italic">
+          Saved.
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ── Main page ─────────────────────────────────────────────────────────────────
+
+export default function AdminUserPage() {
+  const [activeSection, setActiveSection] = useState<Section>("profile");
+  const [savedSection, setSavedSection] = useState<Section | null>(null);
+  
+  const bgColor = '#C3F380'; // Background groen uit pallet
+
+  const [profile, setProfile] = useState<ProfileData>({
+    firstName: "LISA",
+    lastName: "MARIE",
+    username: "avermaet_admin",
+    bio: "Visualizing complex systems.",
+    email: "lisa@studio-avermaet.com",
+    phone: "",
+    location: "ANTWERP",
+    avatar: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({
-    name: "",
-    bio: "",
-    email: "",
-    websiteText: "",
-    profileImage: "",
-    portfolioConcept: "",
-    introLabel: "",
-    tagOne: "",
-    tagTwo: "",
-    textSectionTitle: "",
-    contactTitle: "",
-    portfolioConceptTitle: "",
+
+  const [settings, setSettings] = useState<SettingsData>({
+    language: "English",
+    timezone: "Europe/Brussels",
+    emailNotifications: true,
+    publicProfile: true,
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [imageUploading, setImageUploading] = useState(false);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const previewParagraphs = form.websiteText
-    .split("\n")
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
 
-  useEffect(() => {
-    async function fetchAbout() {
-      try {
-        const res = await fetch("/api/about");
-        if (res.ok) {
-          const data = await res.json();
-          setForm(data);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchAbout();
-  }, []);
-
-  function validate() {
-    let valid = true;
-    let newErrors = {
-      name: "",
-      bio: "",
-      email: "",
-      websiteText: "",
-      profileImage: "",
-      portfolioConcept: "",
-      introLabel: "",
-      tagOne: "",
-      tagTwo: "",
-      textSectionTitle: "",
-      contactTitle: "",
-      portfolioConceptTitle: "",
-    };
-    setErrors(newErrors);
-    return valid;
+  function markSaved() {
+    setSavedSection(activeSection);
+    setTimeout(() => setSavedSection(null), 2000);
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
-  }
-
-  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      setErrors((current) => ({ ...current, profileImage: "Please upload an image file." }));
-      return;
-    }
-
-    if (file.size > 4 * 1024 * 1024) {
-      setErrors((current) => ({ ...current, profileImage: "Image must be smaller than 4 MB." }));
-      return;
-    }
-
-    // Show local preview immediately while uploading
+    if (!file || !file.type.startsWith("image/")) return;
     const reader = new FileReader();
     reader.onload = () => {
-      const preview = typeof reader.result === "string" ? reader.result : "";
-      setForm((current) => ({ ...current, profileImage: preview }));
+      if (typeof reader.result === "string")
+        setProfile((p) => ({ ...p, avatar: reader.result as string }));
     };
     reader.readAsDataURL(file);
-
-    // Upload the file to the server so it persists after save
-    try {
-      setImageUploading(true);
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/upload-image", {
-        method: "POST",
-        body: formData,
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setForm((current) => ({ ...current, profileImage: data.url }));
-        setErrors((current) => ({ ...current, profileImage: "" }));
-      } else {
-        const err = await res.json();
-        setErrors((current) => ({ ...current, profileImage: err.error ?? "Upload failed." }));
-      }
-    } catch {
-      setErrors((current) => ({ ...current, profileImage: "Upload failed. Please try again." }));
-    } finally {
-      setImageUploading(false);
-    }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (validate()) {
-      setSubmitted(true);
-      try {
-        await fetch("/api/about", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-      } catch {}
-      setTimeout(() => setSubmitted(false), 2500);
-    } else {
-      setSubmitted(false);
-    }
-  }
+  const navItems = [
+    { key: "profile" as Section, label: "Profile" },
+    { key: "settings" as Section, label: "Settings" },
+  ];
 
   return (
-    <div className="min-h-screen bg-white px-6 py-10 text-gray-900">
-      <div className="mx-auto w-full max-w-[1280px]">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)] lg:items-start">
-          <div className="overflow-hidden justify-self-start">
-                <div className="grid max-w-[920px] gap-0">
-                  <div className="bg-white px-8 py-10 md:px-10">
-                    <p className="text-[11px] uppercase tracking-[0.3em] text-gray-500">{form.introLabel.trim() || 'Selected introduction'}</p>
-                    <h2 className="mt-4 text-5xl leading-[0.92] text-[#1f1b17]" style={{ fontFamily: 'Georgia, Times, serif' }}>
-                      {form.name.trim() || 'Your Name'}
-                    </h2>
-                    <p className="mt-5 max-w-md text-sm leading-7 text-gray-700">
-                      {form.bio.trim() || 'A short portfolio introduction will appear here. Add a bio to show your voice, your focus and your visual practice.'}
-                    </p>
-
-                    <div className="mt-8 flex flex-wrap gap-3">
-                      <div className="rounded-none border border-gray-300 px-4 py-2 text-xs uppercase tracking-[0.18em] text-gray-600">
-                        {form.tagOne.trim() || 'Visual identity'}
-                      </div>
-                      <div className="rounded-none border border-gray-300 px-4 py-2 text-xs uppercase tracking-[0.18em] text-gray-600">
-                        {form.tagTwo.trim() || 'Editorial design'}
-                      </div>
-                    </div>
-
-                    <div className="mt-10 rounded-none border border-gray-200 bg-white px-6 py-6 shadow-[0_14px_34px_rgba(0,0,0,0.04)]">
-                      <p className="text-[11px] uppercase tracking-[0.24em] text-gray-500">{form.textSectionTitle.trim() || 'Text section'}</p>
-                      <div className="mt-4 space-y-4 text-sm leading-7 text-gray-700">
-                        {(previewParagraphs.length > 0 ? previewParagraphs : ['Your saved website text will appear here as a live preview.']).map((paragraph, index) => (
-                          <p key={index}>{paragraph}</p>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white px-8 pb-10 pt-0 md:px-10">
-                    <div className="grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(260px,1.05fr)]">
-                      <div>
-                        {form.profileImage ? (
-                          <img
-                            src={form.profileImage}
-                            alt="Portfolio preview"
-                            className="aspect-[4/4.6] w-full rounded-none border border-gray-200 object-cover"
-                          />
-                        ) : (
-                          <div className="aspect-[4/4.6] rounded-none border border-gray-200 bg-gray-100" />
-                        )}
-                        <div className="mt-5 border-t border-gray-200 pt-5">
-                          <p className="text-[11px] uppercase tracking-[0.26em] text-gray-500">{form.contactTitle.trim() || 'Contact'}</p>
-                          <p className="mt-3 text-sm text-gray-800">{form.email.trim() || 'name@example.com'}</p>
-                        </div>
-                      </div>
-
-                      <div className="grid content-start gap-6">
-                        <div className="rounded-none border border-gray-200 bg-white px-6 py-5 shadow-[0_18px_32px_rgba(0,0,0,0.04)]">
-                          <p className="text-[11px] uppercase tracking-[0.24em] text-gray-500">{form.portfolioConceptTitle.trim() || 'Portfolio page concept'}</p>
-                          <p className="mt-3 text-sm leading-6 text-gray-700">
-                            {form.portfolioConcept.trim() || 'This example shows how your name, bio, free text and contact details come together in a short and clear portfolio intro.'}
-                          </p>
-                        </div>
-
-                        <div className="rounded-none border border-gray-200 bg-white px-6 py-5 shadow-[0_18px_32px_rgba(0,0,0,0.04)]">
-                          <p className="text-[11px] uppercase tracking-[0.24em] text-gray-500">Availability</p>
-                          <p className="mt-3 text-sm leading-6 text-gray-700">
-                            Available for portfolio reviews, editorial concepts and visual identity explorations.
-                          </p>
-                        </div>
-
-                        <div className="rounded-none border border-gray-200 bg-white px-6 py-5 shadow-[0_18px_32px_rgba(0,0,0,0.04)]">
-                          <p className="text-[11px] uppercase tracking-[0.24em] text-gray-500">Highlights</p>
-                          <ul className="mt-3 space-y-2 text-sm leading-6 text-gray-700">
-                            <li>Print and editorial storytelling</li>
-                            <li>Concept-driven visual research</li>
-                            <li>Careful typography and composition</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-          </div>
-        </div>
-
-        {isEditorOpen && (
-          <div
-            className="fixed inset-0 z-20"
-            onClick={() => setIsEditorOpen(false)}
-          />
-        )}
-
-        <div
-          className={`fixed bottom-6 right-6 top-24 z-30 w-[calc(100vw-3rem)] max-w-[520px] border border-gray-200 bg-white shadow-[-24px_0_48px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out ${isEditorOpen ? 'translate-x-0' : 'translate-x-[110%]'}`}
-          style={{ fontFamily: 'Georgia, Times, serif' }}
-        >
-          <div className="flex h-full flex-col overflow-y-auto p-8 pt-10">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900">Edit Content</h2>
-                <p className="mt-2 text-sm text-gray-500">
-                  Update the public text below. After saving, the website text will appear automatically on the About page.
-                </p>
-              </div>
+    <div className="min-h-screen pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
+      <div className="flex min-h-[calc(100vh-5rem)]">
+        
+        {/* ── Sidebar ── */}
+        <aside className="w-64 shrink-0 border-r border-black/5 bg-transparent px-0 py-10">
+          <p className="px-8 mb-8 text-[10px] uppercase tracking-[0.3em] font-black text-black/20">
+            Navigation
+          </p>
+          <nav className="flex flex-col">
+            {navItems.map(({ key, label }) => (
               <button
-                type="button"
-                onClick={() => setIsEditorOpen(false)}
-                aria-label="Close panel"
-                title="Close"
-                className="bg-transparent p-1 text-gray-600 transition-colors hover:text-black focus:outline-none"
+                key={key}
+                onClick={() => setActiveSection(key)}
+                className={`px-8 py-4 text-left text-xs font-black uppercase tracking-widest transition-all ${
+                  activeSection === key
+                    ? "text-black border-r-4 border-black"
+                    : "text-black/30 hover:text-black"
+                }`}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                  <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                </svg>
+                {label}
               </button>
-            </div>
+            ))}
+          </nav>
+        </aside>
 
-            <div className="mt-8 flex-1">
-              {loading ? (
-                <div className="text-center text-gray-500">Loading...</div>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="introLabel"
-                      value={form.introLabel}
-                      onChange={handleChange}
-                      className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                      placeholder="Intro Label"
-                      autoComplete="off"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Intro Label
-                    </label>
+        {/* ── Main area ── */}
+        <main className="flex-1 px-12 py-10 max-w-4xl">
 
-                  </div>
+          {/* ── PROFILE ── */}
+          {activeSection === "profile" && (
+            <section className="animate-in fade-in duration-500">
+              <h1 className="text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profile</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-12">User_Identity_Node</p>
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                      placeholder="Name"
-                      autoComplete="off"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Name
-                    </label>
-
-                  </div>
-
-                  <div className="relative">
-                    <textarea
-                      name="bio"
-                      value={form.bio}
-                      onChange={handleChange}
-                      rows={4}
-                      className="peer w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                      placeholder="Bio"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Bio
-                    </label>
-
-                  </div>
-
-                  <div className="relative">
-                    <textarea
-                      name="websiteText"
-                      value={form.websiteText}
-                      onChange={handleChange}
-                      rows={6}
-                      className="peer w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                      placeholder="Website Text"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Website Text
-                    </label>
-
-                  </div>
-
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="tagOne"
-                        value={form.tagOne}
-                        onChange={handleChange}
-                        className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                        placeholder="First Tag"
-                        autoComplete="off"
-                      />
-                      <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                        First Tag
-                      </label>
-
-                    </div>
-
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="tagTwo"
-                        value={form.tagTwo}
-                        onChange={handleChange}
-                        className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                        placeholder="Second Tag"
-                        autoComplete="off"
-                      />
-                      <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                        Second Tag
-                      </label>
-
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="textSectionTitle"
-                      value={form.textSectionTitle}
-                      onChange={handleChange}
-                      className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                      placeholder="Text Section Title"
-                      autoComplete="off"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Text Section Title
-                    </label>
-
-                  </div>
-
-                  <div className="relative">
-                    <textarea
-                      name="portfolioConcept"
-                      value={form.portfolioConcept}
-                      onChange={handleChange}
-                      rows={4}
-                      className="peer w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                      placeholder="Portfolio Concept"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Portfolio Concept
-                    </label>
-                    <p className="mt-2 text-xs text-gray-400">Describe the concept behind your portfolio: your approach, vision, and what makes your work distinctive.</p>
-                  </div>
-
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="contactTitle"
-                        value={form.contactTitle}
-                        onChange={handleChange}
-                        className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                        placeholder="Contact Title"
-                        autoComplete="off"
-                      />
-                      <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                        Contact Title
-                      </label>
-
-                    </div>
-
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="portfolioConceptTitle"
-                        value={form.portfolioConceptTitle}
-                        onChange={handleChange}
-                        className="peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition"
-                        placeholder="Portfolio Concept Title"
-                        autoComplete="off"
-                      />
-                      <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                        Portfolio Concept Title
-                      </label>
-
-                    </div>
-                  </div>
-
-                  <div className="relative">
-                    <input
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      className={`peer h-12 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-blue-600 transition ${errors.email ? 'border-red-500' : ''}`}
-                      placeholder="Email"
-                      autoComplete="off"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-blue-600 peer-focus:text-sm">
-                      Email
-                    </label>
-                    {errors.email && <span className="text-red-500 text-xs mt-1 block">{errors.email}</span>}
-                  </div>
-
-                  <div className="flex flex-col gap-3">
-                    <label className="text-sm text-gray-600">Photo</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      disabled={imageUploading}
-                      className="block w-full border border-gray-300 px-3 py-3 text-sm text-gray-700 file:mr-3 file:border-0 file:bg-black file:px-3 file:py-2 file:text-xs file:font-semibold file:uppercase file:tracking-[0.16em] file:text-white disabled:opacity-50"
-                    />
-                    {imageUploading && (
-                      <p className="text-xs text-gray-500">Uploading…</p>
-                    )}
-                    {errors.profileImage && <span className="text-red-500 text-xs">{errors.profileImage}</span>}
-                    {form.profileImage && !imageUploading ? (
-                      <div className="border border-gray-200 p-3">
-                        <img
-                          src={form.profileImage}
-                          alt="Selected upload"
-                          className="h-40 w-full object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setForm((current) => ({ ...current, profileImage: "" }))}
-                          style={{ fontFamily: 'Georgia, Times, serif' }}
-                          className="mt-3 border border-gray-300 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-700 transition-colors hover:border-black hover:text-black"
-                        >
-                          Remove photo
-                        </button>
-                      </div>
-                    ) : null}
-
-                  </div>
-
-                  <div className="mt-2 flex gap-3">
-                    <button
-                      type="submit"
-                      style={{ fontFamily: 'Georgia, Times, serif' }}
-                      className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-none hover:bg-blue-700 transition font-semibold shadow"
-                    >
-                      Save
-                    </button>
+              <div className="flex items-start gap-10 mb-12">
+                <div className="shrink-0">
+                  {profile.avatar ? (
+                    <img src={profile.avatar} alt="Avatar" className="w-24 h-24 object-cover grayscale border border-black/10" />
+                  ) : (
+                    <div className="w-24 h-24 bg-black/5 border border-black/10 flex items-center justify-center text-black/20 text-[10px] font-black uppercase">No_Img</div>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Profile photo</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    className="block text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-[#C3F380] file:cursor-pointer hover:file:opacity-80"
+                  />
+                  {profile.avatar && (
                     <button
                       type="button"
-                      onClick={() => setForm({ name: "", bio: "", email: "", websiteText: "", profileImage: "", portfolioConcept: "", introLabel: "", tagOne: "", tagTwo: "", textSectionTitle: "", contactTitle: "", portfolioConceptTitle: "" })}
-                      style={{ fontFamily: 'Georgia, Times, serif' }}
-                      className="border border-gray-300 px-4 py-2 text-sm text-gray-600 transition-colors hover:border-black hover:text-black rounded-none"
+                      onClick={() => setProfile((p) => ({ ...p, avatar: "" }))}
+                      className="text-[10px] uppercase tracking-[0.14em] text-black/40 hover:text-black transition-colors text-left font-black"
                     >
-                      Wis alles
+                      Remove photo
                     </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid gap-10 sm:grid-cols-2 mb-8">
+                <Field label="First name" name="firstName" value={profile.firstName} onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))} />
+                <Field label="Last name" name="lastName" value={profile.lastName} onChange={(e) => setProfile((p) => ({ ...p, lastName: e.target.value }))} />
+                <Field label="Username" name="username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
+                <Field label="Email" name="email" value={profile.email} onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))} type="email" />
+                <Field label="Phone" name="phone" value={profile.phone} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
+                <Field label="Location" name="location" value={profile.location} onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))} />
+              </div>
+
+              <div className="mb-12">
+                <TextAreaField label="Biography" name="bio" value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
+              </div>
+
+              <SaveBar onSave={markSaved} saved={savedSection === "profile"} />
+            </section>
+          )}
+
+          {/* ── SETTINGS ── */}
+          {activeSection === "settings" && (
+            <section className="animate-in fade-in duration-500">
+              <h1 className="text-6xl font-black tracking-tighter uppercase mb-2 text-black">Settings</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-12">System_Configuration</p>
+
+              <div className="flex flex-col gap-10 mb-12">
+                <div className="relative">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Language</label>
+                  <select
+                    value={settings.language}
+                    onChange={(e) => setSettings((s) => ({ ...s, language: e.target.value }))}
+                    className="w-full border-b-2 border-black/10 bg-transparent py-2 text-sm font-bold uppercase text-black focus:border-black focus:outline-none appearance-none cursor-pointer"
+                  >
+                    <option className="bg-[#C3F380]">English</option>
+                    <option className="bg-[#C3F380]">Nederlands</option>
+                    <option className="bg-[#C3F380]">Français</option>
+                    <option className="bg-[#C3F380]">Deutsch</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-6">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Preferences</p>
+                  <label className="flex items-center gap-4 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={settings.emailNotifications}
+                      onChange={(e) => setSettings((s) => ({ ...s, emailNotifications: e.target.checked }))}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Email notifications</span>
+                  </label>
+                  <label className="flex items-center gap-4 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={settings.publicProfile}
+                      onChange={(e) => setSettings((s) => ({ ...s, publicProfile: e.target.checked }))}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Public profile</span>
+                  </label>
+                </div>
+
+                <div className="border-t border-black/5 pt-10">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-8">Security</p>
+                  <div className="grid gap-10 sm:grid-cols-2">
+                    <Field label="New password" name="newPassword" value="" onChange={() => {}} type="password" />
+                    <Field label="Confirm password" name="confirmPassword" value="" onChange={() => {}} type="password" />
                   </div>
-                </form>
-              )}
+                </div>
+              </div>
 
-              {submitted && (
-                <div className="mt-4 text-green-600 transition-opacity duration-700 opacity-100 animate-fade-in-out">About info updated!</div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className={`fixed bottom-10 z-40 flex items-center gap-3 transition-all duration-300 ease-out ${isEditorOpen ? 'right-[calc(520px+3rem)]' : 'right-6'}`}>
-          <a
-            href="https://ulqvsiebkdt.typeform.com/to/egcpqhQT"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontFamily: 'Georgia, Times, serif' }}
-            className="inline-flex items-center border border-blue-600 bg-blue-600 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:bg-white hover:text-blue-600"
-          >
-            Enquête
-          </a>
-          <button
-            type="button"
-            onClick={() => setIsEditorOpen((open) => !open)}
-            style={{ fontFamily: 'Georgia, Times, serif' }}
-            className="inline-flex items-center border border-black bg-black px-4 py-2 text-left text-white transition-colors hover:bg-white hover:text-black"
-          >
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em]">Edit</h2>
-          </button>
-        </div>
+              <SaveBar onSave={markSaved} saved={savedSection === "settings"} />
+            </section>
+          )}
+        </main>
       </div>
     </div>
   );

@@ -1,581 +1,220 @@
 "use client"
 
-import Image from 'next/image'
-import { useState, useEffect, useMemo, useRef } from 'react'
-import { createPortal } from 'react-dom'
+import React, { useState, useEffect, useRef } from 'react';
+
+const FontLink = () => (
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
+    rel="stylesheet"
+  />
+);
 
 export default function HomePage() {
-  const images = [
-    'IMG_5001.PNG',
-    'IMG_5002.PNG',
-    'IMG_5003.PNG',
-    'IMG_5004.PNG',
-    'IMG_5005.PNG',
-    'IMG_5006.PNG',
-    'IMG_5007.PNG',
-    'IMG_5008.PNG',
-    'IMG_5009.PNG',
-    'IMG_5019.PNG'
-  ]
+  const [activeTextColor, setActiveTextColor] = useState('#000000');
+  const [displayedPortfolio, setDisplayedPortfolio] = useState('');
+  const [hoveredLetters, setHoveredLetters] = useState<{ [key: number]: boolean }>({});
+  const letterTimeouts = useRef<{ [key: number]: NodeJS.Timeout }>({});
+  const resetTimeout = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set())
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [glowIntensity, setGlowIntensity] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-  const [hoveredBall, setHoveredBall] = useState(-1)
-  const [hoveredOrbForOpacity, setHoveredOrbForOpacity] = useState(-1)
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const projectsRef = useRef<HTMLElement | null>(null)
-  const flipOrderRef = useRef<number[]>([])
-  const orb0Ref = useRef<HTMLAnchorElement>(null)
-  const orb1Ref = useRef<HTMLAnchorElement>(null)
-  const orb2Ref = useRef<HTMLAnchorElement>(null)
+  const offWhite = '#FAFAFA';
+  const fullText = "PORTFOLIO";
+  const nameParts = ["VAN", "AVERMAET", "LISA MARIE"];
+  const chars = "ABCDEFGHIJKLMNPQRSTUVWXYZ0123456789#%&*";
 
-  const stars = useMemo(() => {
-    const starCount = 140
-    return Array.from({ length: starCount }, (_, index) => {
-      const size = 0.6 + Math.random() * 1.8
-      return {
-        id: index,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size,
-        opacity: 0.25 + Math.random() * 0.7,
-        duration: 3 + Math.random() * 6,
-        delay: Math.random() * 6
-      }
-    })
-  }, [])
+  const letterColors = ["#FF97D0", "#125603", "#C3F380", "#D13F13", "#FDC5C6"];
 
-  const starRain = useMemo(() => {
-    const dropCount = 40
-    return Array.from({ length: dropCount }, (_, index) => {
-      return {
-        id: index,
-        left: Math.random() * 100,
-        size: 0.6 + Math.random() * 1.2,
-        opacity: 0.2 + Math.random() * 0.6,
-        duration: 8 + Math.random() * 10,
-        delay: Math.random() * 10,
-        startY: -20 - Math.random() * 20
-      }
-    })
-  }, [])
-
-  const bigStarRain = useMemo(() => {
-    const dropCount = 1
-    return Array.from({ length: dropCount }, (_, index) => {
-      return {
-        id: index,
-        left: Math.random() * 100,
-        size: 3.5 + Math.random() * 2.5,
-        opacity: 0.45 + Math.random() * 0.35,
-        duration: 10 + Math.random() * 6,
-        delay: 6 + Math.random() * 8,
-        startY: -30 - Math.random() * 30
-      }
-    })
-  }, [])
+  const boeken = [
+    { title: "HOME", code: "H.00", system: "MAIN INTERFACE", edition: "VER. 1.0", bgColor: "#FF97D0", textColor: "#125603", description: "Pastel Magenta Landing" },
+    { title: "PROJECT 1", code: "P.01", system: "YEAR DATABASE", edition: "ED. 01", bgColor: "#125603", textColor: "#C3F380", description: "Lincoln Green Identity" },
+    { title: "PROJECT 2", code: "P.02", system: "M2-SYSTEMS™", edition: "ED. 02", bgColor: "#C3F380", textColor: "#7523B4", description: "Light Lime Systems" },
+    { title: "PROJECT 3", code: "P.03", system: "ARCHIVE_LOG", edition: "ED. 01", bgColor: "#FAE170", textColor: "#D13F13", description: "Sinopia Editorial" },
+    { title: "ABOUT ME", code: "AB.04", system: "BIO_DATA", edition: "INFO", bgColor: "#FDC5C6", textColor: "#D13F13", description: "Profile and Background" },
+  ];
 
   useEffect(() => {
-    setIsMounted(true)
-    if (typeof window !== 'undefined') {
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'manual'
-      }
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-    }
-  }, [])
-
-  useEffect(() => {
-    // Kies 3 willekeurige foto's om al geflipped te zijn
-    const randomIndexes = new Set<number>()
-    while (randomIndexes.size < 3) {
-      randomIndexes.add(Math.floor(Math.random() * images.length))
-    }
-    setFlippedCards(randomIndexes)
-
-    // Random volgorde voor scroll-flip
-    const order = images.map((_, i) => i)
-    for (let i = order.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1))
-      const temp = order[i]
-      order[i] = order[j]
-      order[j] = temp
-    }
-    flipOrderRef.current = order
-  }, [])
-
-  useEffect(() => {
-    if (scrollProgress > 0.05) {
-      return
-    }
-
+    let iteration = 0;
     const interval = setInterval(() => {
-      setFlippedCards(prev => {
-        const newSet = new Set(prev)
-        if (newSet.size >= 4) {
-          const flippedArray = Array.from(newSet)
-          const toUnflip = flippedArray[Math.floor(Math.random() * flippedArray.length)]
-          newSet.delete(toUnflip)
-        } else {
-          const unflipped = images.map((_, i) => i).filter(i => !newSet.has(i))
-          if (unflipped.length > 0) {
-            const toFlip = unflipped[Math.floor(Math.random() * unflipped.length)]
-            newSet.add(toFlip)
-          }
-        }
-        return newSet
-      })
-    }, 2000)
-
-    return () => clearInterval(interval)
-  }, [images.length, scrollProgress])
+      setDisplayedPortfolio(fullText.split("").map((l, i) => i < iteration ? fullText[i] : chars[Math.floor(Math.random() * chars.length)]).join(""));
+      if (iteration >= fullText.length) clearInterval(interval);
+      iteration += 1 / 2.5; 
+    }, 40);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
-    let rafId = 0
+    const container = containerRef.current;
+    if (!container) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      container.style.setProperty('--m-x', `${e.clientX}px`);
+      container.style.setProperty('--m-y', `${e.clientY}px`);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-    const onScroll = () => {
-      if (!projectsRef.current) return
-      if (rafId) cancelAnimationFrame(rafId)
+  const handleBookHover = (boek: any) => {
+    if (resetTimeout.current) clearTimeout(resetTimeout.current);
+    setActiveTextColor(boek.bgColor); 
+  };
 
-      const currentRef = projectsRef.current
-      rafId = requestAnimationFrame(() => {
-        const triggerPoint = currentRef.offsetTop - window.innerHeight * 0.8
-        const progress = Math.min(Math.max(window.scrollY / Math.max(triggerPoint - window.innerHeight, 1), 0), 1)
-        setScrollProgress(progress)
+  const handleBookLeave = () => {
+    resetTimeout.current = setTimeout(() => setActiveTextColor('#000000'), 150);
+  };
 
-        const order = flipOrderRef.current
-        const targetCount = Math.floor(progress * order.length)
-        setFlippedCards(new Set(order.slice(0, targetCount)))
-      })
-    }
+  const handleLetterActive = (globalIdx: number) => {
+    if (letterTimeouts.current[globalIdx]) clearTimeout(letterTimeouts.current[globalIdx]);
+    setHoveredLetters(prev => ({ ...prev, [globalIdx]: true }));
+    letterTimeouts.current[globalIdx] = setTimeout(() => {
+      setHoveredLetters(prev => ({ ...prev, [globalIdx]: false }));
+    }, 1500);
+  };
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (rafId) cancelAnimationFrame(rafId)
-    }
-  }, [])
-
-  const handleFlip = (index: number) => {
-    setFlippedCards(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(index)) {
-        newSet.delete(index)
-      } else {
-        newSet.add(index)
-      }
-      return newSet
-    })
-  }
-
-  const handleStarHover = (hovering: boolean) => {
-    setIsHovering(hovering)
-    if (hovering) {
-      const interval = setInterval(() => {
-        setGlowIntensity(prev => Math.min(prev + 1, 100))
-      }, 100)
-      
-      // Store interval ID on the button element
-      const button = document.getElementById('star-button')
-      if (button) {
-        (button as any).glowInterval = interval
-      }
-    } else {
-      const button = document.getElementById('star-button')
-      if (button && (button as any).glowInterval) {
-        clearInterval((button as any).glowInterval)
-      }
-      setGlowIntensity(0)
-    }
-  }
-
-  const glowStyle = {
-    filter: `${isHovering ? 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 30px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.1))' : ''}
-             drop-shadow(0 0 ${glowIntensity * 5}px rgba(255,255,255,${Math.min(glowIntensity / 50, 1)})) 
-             drop-shadow(0 0 ${glowIntensity * 15}px rgba(255,255,255,${Math.min(glowIntensity / 80, 1)})) 
-             drop-shadow(0 0 ${glowIntensity * 30}px rgba(255,255,255,${Math.min(glowIntensity / 100, 1)}))
-             drop-shadow(0 0 ${glowIntensity * 50}px rgba(255,255,255,${Math.min(glowIntensity / 120, 1)}))`,
-    transform: `scale(${1 + glowIntensity / 500})`
-  }
+  let globalCharCounter = 0;
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-start pt-0 bg-white">
-      {/* White glow overlay */}
+    <>
+      <FontLink />
       <div 
-        className="fixed inset-0 pointer-events-none z-20 transition-all duration-500"
-        style={{
-          background: `radial-gradient(circle at calc(100% - 21rem) 25rem, 
-            rgba(255, 250, 220, ${Math.min(glowIntensity / 100, 0.9)}) 0%, 
-            rgba(255, 245, 200, ${Math.min(glowIntensity / 150, 0.7)}) ${glowIntensity * 3}px,
-            rgba(255, 240, 180, ${Math.min(glowIntensity / 200, 0.5)}) ${glowIntensity * 6}px,
-            rgba(255, 235, 160, ${Math.min(glowIntensity / 300, 0.3)}) ${glowIntensity * 10}px,
-            transparent ${glowIntensity * 15}px)`
-        }}
-      />
-      
-      {/* Get Started button rechtsbovenaan */}
-      <div className="absolute top-8 right-[5.75rem] z-30">
-        <button 
-          id="star-button"
-          onMouseEnter={() => handleStarHover(true)}
-          onMouseLeave={() => handleStarHover(false)}
-          className="relative w-40 h-40 bg-transparent text-black font-bold transition-all duration-300 flex items-center justify-center"
-        >
-          <svg 
-            width="280" 
-            height="160" 
-            viewBox="0 0 128 128" 
-            fill="white" 
-            className="absolute transition-all duration-300" 
-            style={glowStyle}
-            preserveAspectRatio="none"
-          >
-            <path d="M64 8 L70 44 L100 30 L82 60 L114 64 L82 68 L100 98 L70 84 L64 120 L58 84 L28 98 L46 68 L14 64 L46 60 L28 30 L58 44 Z" />
-          </svg>
-          <span className="relative z-10 text-sm uppercase">BUTTON</span>
-        </button>
-      </div>
-      
-      {/* 3x3 Grid linksonder */}
-      {isMounted && createPortal(
-        <div 
-          className="fixed left-40 bottom-36 z-40 transition-opacity duration-300"
-          style={{
-            opacity: 1 - scrollProgress,
-            pointerEvents: scrollProgress >= 1 ? 'none' : 'auto'
-          }}
-        >
-          <div className="grid grid-cols-4 gap-2">
-            {/* Eerste vakje leeg */}
-            <div className="w-20 h-20"></div>
-            
-            {/* 10 foto's */}
-            {images.map((img, i) => (
-              <div 
-                key={i} 
-                className="w-20 h-20 cursor-pointer" 
-                style={{ perspective: '1000px' }}
-                onMouseEnter={() => handleFlip(i)}
-                onClick={() => setSelectedImage(img)}
-              >
-                <div 
-                  className="w-full h-full relative transition-transform duration-700" 
-                  style={{ 
-                    transformStyle: 'preserve-3d',
-                    transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                  }}
-                >
-                  {/* Voorkant - foto */}
-                  <div className="absolute inset-0 bg-black overflow-hidden" style={{ backfaceVisibility: 'hidden' }}>
-                    <Image
-                      src={`/${img}`}
-                      alt={`Image ${i + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  {/* Achterkant - zwart */}
-                  <div className="absolute inset-0 bg-black" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  </div>
+        ref={containerRef}
+        className="fixed inset-0 h-[100dvh] w-full font-sans uppercase overflow-hidden select-none md:cursor-none" 
+        style={{ backgroundColor: offWhite, ['--m-x' as any]: '0px', ['--m-y' as any]: '0px' }}
+      >
+        <div className="flex flex-col md:flex-row h-full w-full relative">
+          
+          <div className="linkse-tekst w-full md:w-[40vw] lg:w-[45vw] h-full p-6 md:p-10 md:pb-20 flex flex-col justify-end relative z-[60] pointer-events-none">
+            <div className="leading-none w-full pointer-events-auto flex flex-col items-start gap-1 max-w-full">
+              <div className="flex flex-col items-start relative max-w-fit w-full">
+                <div className="inline-flex flex-col relative w-full">
+                  {/* De kleur van h2 wordt nu bepaald door activeTextColor */}
+                  <h2 className="tracking-tighter flex items-end justify-start transition-colors duration-500" style={{ color: activeTextColor }}>
+                    <span className="select-none inline-block leading-none" 
+                          style={{ 
+                            fontFamily: '"Pinyon Script", cursive',
+                            fontSize: 'clamp(4rem, 12vw, 12rem)', 
+                            marginRight: '-0.1em',
+                            marginBottom: '0.05em',
+                            transform: 'translateY(0.25em) rotate(-2deg)',
+                            zIndex: 10,
+                            fontWeight: 400
+                          }}>
+                      {displayedPortfolio.charAt(0)}
+                    </span>
+                    <span className="font-black leading-[0.85] relative z-20" 
+                          style={{ fontSize: 'clamp(1.8rem, 7vw, 5.5rem)' }}>
+                      {displayedPortfolio.slice(1)}
+                    </span>
+                  </h2>
+                  <span className="font-serif italic font-light tracking-tight normal-case block z-30 absolute left-0 right-0 transition-colors duration-500" 
+                        style={{ 
+                          fontSize: 'clamp(0.9rem, 3vw, 2.8rem)',
+                          color: activeTextColor,
+                          bottom: '1.5em', 
+                          textAlign: 'right'
+                        }}>
+                    graphic design
+                  </span>
                 </div>
               </div>
-            ))}
-            
-            {/* Laatste vakje rechtsonder leeg */}
-            <div className="w-20 h-20"></div>
+
+              <h1 className="font-black tracking-tighter leading-[0.9] text-left" 
+                  style={{ fontSize: 'clamp(1.5rem, 5vw, 4.8rem)' }}>
+                {nameParts.map((part, partIdx) => (
+                  <span key={partIdx} className="inline-block whitespace-nowrap mr-[0.3em]">
+                    {part.split("").map((char) => {
+                      const currentIdx = globalCharCounter++;
+                      return (
+                        <span 
+                          key={currentIdx}
+                          onMouseEnter={() => handleLetterActive(currentIdx)}
+                          className="transition-colors duration-200 inline-block cursor-default pointer-events-auto"
+                          style={{ color: hoveredLetters[currentIdx] ? letterColors[currentIdx % letterColors.length] : '#000000' }}
+                        >
+                          {char === " " ? "\u00A0" : char}
+                        </span>
+                      );
+                    })}
+                    {partIdx < nameParts.length - 1 && <br className="hidden md:block" />}
+                  </span>
+                ))}
+              </h1>
+            </div>
           </div>
-        </div>,
-        document.body
-      )}
-      <div className="relative z-10 w-full mx-auto px-4 space-y-4 flex flex-col items-center mt-2">
-        <h1 className="text-9xl font-bold uppercase leading-tight w-full max-w-7xl glow-hover transition-all duration-500 mt-0">
-          <div className="text-left">
-            <span className="decorative-w">W</span>e<span className="flicker-1">l</span>co<span className="flicker-2">m</span>e
+
+          <div className="w-full md:w-full h-full relative flex items-end md:items-center justify-start md:justify-end overflow-x-auto md:overflow-visible p-4 md:p-6 snap-x snap-mandatory no-scrollbar md:fixed md:top-0 md:right-0 z-10">
+            <div className="relative flex items-end h-[60dvh] md:h-[85vh] lg:h-[90vh] min-w-max md:min-w-0 md:w-auto max-w-full justify-end pb-8 md:pb-0 md:pr-8">
+              <div className="flex items-end gap-1.5 md:gap-2 px-6 md:px-0">
+                {boeken.map((boek, i) => {
+                  const isHome = boek.title === "HOME";
+                  const isAbout = boek.title === "ABOUT ME";
+                  
+                  let widthClasses = "w-12 md:w-16 lg:w-20 xl:w-24"; 
+                  if (isHome) widthClasses = "w-24 md:w-32 lg:w-40 xl:w-56"; 
+                  if (isAbout) widthClasses = "w-14 md:w-20 lg:w-24 xl:w-32";
+
+                  let hoverWidthClasses = "group-hover:w-16 md:group-hover:w-24 lg:group-hover:w-[350px] xl:group-hover:w-[500px]";
+                  if (isHome) hoverWidthClasses = "group-hover:w-28 md:group-hover:w-36 lg:group-hover:w-[220px] xl:group-hover:w-[280px]";
+
+                  return (
+                    <div key={i} 
+                         onMouseEnter={() => handleBookHover(boek)} 
+                         onMouseLeave={handleBookLeave}
+                         className={`relative group origin-bottom transition-all duration-500 shrink-0 snap-center hover:z-[70] ${isAbout ? 'rotate-[2deg] md:hover:rotate-0' : 'z-10'}`}>
+                      
+                      <div className={`relative flex flex-col justify-between py-6 md:py-8 px-3 shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden 
+                        ${widthClasses}
+                        ${hoverWidthClasses}
+                        ${isHome ? 'h-[220px] md:h-[40vh] lg:h-[50vh]' : isAbout ? 'h-[300px] md:h-[65vh] lg:h-[80vh]' : `${i % 2 === 0 ? 'h-[280px] md:h-[60vh] lg:h-[75vh]' : 'h-[250px] md:h-[55vh] lg:h-[70vh]'}`} 
+                        `} 
+                        style={{ 
+                          backgroundColor: '#000000', 
+                          color: '#FFFFFF', 
+                          '--hover-bg': boek.bgColor,
+                          '--hover-text': boek.textColor 
+                        } as any}>
+                        
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" 
+                             style={{ backgroundColor: 'var(--hover-bg)' }} />
+
+                        <div className="absolute inset-0 p-6 lg:p-10 hidden lg:flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 min-w-[200px] z-10"
+                             style={{ color: 'var(--hover-text)' }}>
+                          <div className="flex justify-between items-start border-b border-current pb-3 lg:pb-4">
+                            <span className="font-mono text-[8px] lg:text-[10px] font-bold">{boek.system}</span>
+                            <span className="font-mono text-[8px] lg:text-[10px]">{boek.code}</span>
+                          </div>
+                          <div className="flex flex-col py-2">
+                            <h3 className={`font-black leading-[0.8] tracking-tighter mb-3 ${isHome ? 'text-3xl lg:text-5xl xl:text-6xl' : 'text-4xl lg:text-6xl xl:text-8xl'}`}>{boek.title}</h3>
+                            <p className="text-[10px] lg:text-[13px] font-black tracking-widest opacity-90 leading-tight">{boek.description}</p>
+                          </div>
+                          <div className="flex justify-between items-end border-t border-current pt-3">
+                            <span className="text-[8px] lg:text-[11px] font-bold font-mono">VER_2026</span>
+                            <span className="text-xl lg:text-3xl xl:text-4xl font-black italic">{boek.edition}</span>
+                          </div>
+                        </div>
+
+                        <div className="h-full w-full flex flex-col justify-between items-center lg:group-hover:opacity-0 transition-opacity duration-200 z-10">
+                          <span className="text-[7px] md:text-[10px] font-bold vertical-text rotate-180 opacity-80">{boek.system}</span>
+                          <div className="flex flex-col items-center gap-3 lg:gap-4">
+                            <span className={`${isHome ? 'text-[12px] md:text-xl' : 'text-[10px] md:text-lg'} font-black rotate-90 whitespace-nowrap tracking-tighter`}>{boek.title}</span>
+                            <span className="text-[6px] rotate-90 opacity-40 font-mono">{boek.edition}</span>
+                          </div>
+                          <span className="text-[7px] md:text-[11px] font-bold vertical-text rotate-180">{boek.code}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-          <div className="text-right">
-            <span className="inline-block text-left">
-              <div>to <span className="flicker-3">m</span>y</div>
-              <div>p<span className="flicker-1">o</span>rtf<span className="flicker-2">o</span>lio</div>
-            </span>
-          </div>
-        </h1>
-        <p className="text-lg text-white mt-2">
-          Lisa Marie Van Avermaet
-        </p>
+        </div>
+
+        <style jsx>{`
+          .vertical-text { writing-mode: vertical-rl; }
+          .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+          .no-scrollbar::-webkit-scrollbar { display: none; }
+        `}</style>
       </div>
-
-      <section 
-        ref={projectsRef} 
-        className="relative z-10 w-full text-white mt-2 py-12 min-h-screen -mx-20 px-20 overflow-hidden"
-        style={{
-          background: '#222',
-          transition: 'background 1s ease-out'
-        }}
-      >
-        <div className="stars-layer" aria-hidden="true">
-          {stars.map((star) => (
-            <span
-              key={`star-${star.id}`}
-              className="star"
-              style={{
-                top: `${star.top}%`,
-                left: `${star.left}%`,
-                width: `${star.size}px`,
-                height: `${star.size}px`,
-                opacity: star.opacity,
-                animationDuration: `${star.duration}s`,
-                animationDelay: `${star.delay}s`
-              }}
-            />
-          ))}
-        </div>
-        <div className="stars-rain" aria-hidden="true">
-          {starRain.map((drop) => (
-            <span
-              key={`drop-${drop.id}`}
-              className="star-drop"
-              style={{
-                left: `${drop.left}%`,
-                top: `${drop.startY}%`,
-                width: `${drop.size}px`,
-                height: `${drop.size}px`,
-                opacity: drop.opacity,
-                animationDuration: `${drop.duration}s`,
-                animationDelay: `${drop.delay}s`
-              }}
-            />
-          ))}
-          {bigStarRain.map((drop) => (
-            <span
-              key={`big-drop-${drop.id}`}
-              className="star-drop star-drop-large"
-              style={{
-                left: `${drop.left}%`,
-                top: `${drop.startY}%`,
-                width: `${drop.size}px`,
-                height: `${drop.size}px`,
-                opacity: drop.opacity,
-                animationDuration: `${drop.duration}s`,
-                animationDelay: `${drop.delay}s`
-              }}
-            />
-          ))}
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <h2 className="text-6xl font-bold uppercase text-center mb-8"><span className="decorative-w">P</span>rojects</h2>
-          <div className="grid grid-cols-3 gap-12">
-            {/* Project 1 - Visual Design orb links to /project */}
-            <a
-              href="/project"
-              ref={orb0Ref}
-              className="relative inline-flex items-center justify-center cursor-pointer float-animation transition-all duration-300 ease-out"
-              onMouseEnter={() => { setHoveredBall(0); setHoveredOrbForOpacity(0); }}
-              onMouseLeave={() => { setHoveredOrbForOpacity(-1); setHoveredBall(-1); }}
-              style={{ animationDelay: '0s', opacity: hoveredOrbForOpacity !== -1 && hoveredOrbForOpacity !== 0 ? 0.5 : 1, transform: hoveredOrbForOpacity === 0 ? 'scale(1.2)' : 'scale(1)' }}
-            >
-              <div className="rounded-full w-64 h-64" style={{
-                background: 'radial-gradient(circle, rgba(255,165,0,0.85) 0%, rgba(255,140,0,0.6) 30%, rgba(255,120,0,0.35) 55%, rgba(255,140,0,0.2) 72%, rgba(255,140,0,0.1) 85%, transparent 100%)',
-                boxShadow: hoveredOrbForOpacity === 0 && hoveredBall === 0
-                  ? '0 0 90px rgba(255,140,0,0.7), 0 0 140px rgba(255,100,0,0.6), inset 0 0 30px rgba(255,140,0,0.25), inset 0 0 60px rgba(255,100,0,0.15)'
-                  : '0 0 60px rgba(255,140,0,0.4), 0 0 100px rgba(255,100,0,0.3), inset 0 0 25px rgba(255,140,0,0.18), inset 0 0 50px rgba(255,100,0,0.12)',
-                filter: hoveredOrbForOpacity === 0 && hoveredBall === 0 ? 'brightness(1.2) saturate(1.25)' : 'brightness(1) saturate(1)'
-              }}></div>
-              <p className="absolute text-2xl font-bold text-orange-200 text-center max-w-48 opacity-90 text-glow-orange">LEPORELLO</p>
-            </a>
-            
-            {/* Project 2 */}
-            <a
-              href="/project2"
-              ref={orb1Ref}
-              className="relative inline-flex items-center justify-center cursor-pointer float-animation transition-all duration-300 ease-out"
-              onMouseEnter={() => { setHoveredBall(1); setHoveredOrbForOpacity(1); }}
-              onMouseLeave={() => { setHoveredOrbForOpacity(-1); setHoveredBall(-1); }}
-              style={{ animationDelay: '0.6s', opacity: hoveredOrbForOpacity !== -1 && hoveredOrbForOpacity !== 1 ? 0.5 : 1, transform: hoveredOrbForOpacity === 1 ? 'scale(1.2)' : 'scale(1)' }}
-            >
-              <div className="rounded-full w-64 h-64" style={{
-                background: 'radial-gradient(circle, rgba(0,200,200,0.85) 0%, rgba(0,185,190,0.6) 30%, rgba(0,175,175,0.35) 55%, rgba(0,180,150,0.2) 72%, rgba(0,180,150,0.1) 85%, transparent 100%)',
-                boxShadow: hoveredOrbForOpacity === 1 && hoveredBall === 1
-                  ? '0 0 90px rgba(0,200,200,0.7), 0 0 140px rgba(0,170,188,0.6), inset 0 0 30px rgba(0,200,200,0.25), inset 0 0 60px rgba(0,170,188,0.15)'
-                  : '0 0 60px rgba(0,200,200,0.4), 0 0 100px rgba(0,170,188,0.3), inset 0 0 25px rgba(0,200,200,0.18), inset 0 0 50px rgba(0,170,188,0.12)',
-                filter: hoveredOrbForOpacity === 1 && hoveredBall === 1 ? 'brightness(1.2) saturate(1.25)' : 'brightness(1) saturate(1)'
-              }}></div>
-              <p className="absolute text-2xl font-bold text-cyan-200 text-center max-w-48 opacity-90 text-glow-cyan">FIBONACCI</p>
-            </a>
-          </div>
-        </div>
-      </section>
-      
-      {/* Modal voor grote foto weergave */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-8"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-5xl max-h-[90vh] w-full h-full">
-            <Image
-              src={`/${selectedImage}`}
-              alt="Selected image"
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
-      )}
-      
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Press+Start+2P&display=swap');
-        
-        .decorative-w {
-          font-family: 'Great Vibes', cursive;
-          font-size: 1.5em;
-          font-weight: normal;
-        }
-        
-        .fun-font {
-          font-family: 'Press Start 2P', cursive;
-          font-size: 0.75em;
-          letter-spacing: 0.05em;
-        }
-
-        .text-glow-orange {
-          text-shadow: 0 0 8px rgba(255, 140, 0, 0.45), 0 0 16px rgba(255, 120, 0, 0.35);
-        }
-
-        .text-glow-cyan {
-          text-shadow: 0 0 8px rgba(0, 200, 200, 0.45), 0 0 16px rgba(0, 170, 188, 0.35);
-        }
-
-        .text-glow-pink {
-          text-shadow: 0 0 8px rgba(200, 90, 150, 0.45), 0 0 16px rgba(205, 95, 160, 0.35);
-        }
-
-        .stars-layer {
-          position: absolute;
-          inset: 0;
-          overflow: hidden;
-          pointer-events: none;
-          z-index: 0;
-          opacity: 0.85;
-        }
-
-        .stars-rain {
-          position: absolute;
-          inset: 0;
-          height: 100%;
-          overflow: hidden;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        .star {
-          position: absolute;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 1);
-          box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
-          animation: starTwinkle linear infinite;
-        }
-
-        .star-drop {
-          position: absolute;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 1);
-          box-shadow: 0 0 14px rgba(255, 255, 255, 0.8);
-          animation: starDrop linear infinite;
-        }
-
-        .star-drop-large {
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 1);
-          box-shadow: 0 0 22px rgba(255, 255, 255, 0.95), 0 0 44px rgba(255, 255, 255, 0.7);
-          filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.75));
-        }
-
-        @keyframes starRain {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(50%); }
-        }
-
-        @keyframes starTwinkle {
-          0% { opacity: 0.6; transform: scale(0.9); }
-          40% { opacity: 1; transform: scale(1.25); }
-          100% { opacity: 0.7; transform: scale(1); }
-        }
-
-        @keyframes starDrop {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(140vh); }
-        }
-        
-        .glow-hover:hover {
-          text-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
-                       0 0 30px rgba(255, 255, 255, 0.2),
-                       0 0 40px rgba(255, 255, 255, 0.1);
-        }
-        
-        @keyframes flicker {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-        
-        .flicker-1 {
-          animation: flicker 5s infinite;
-        }
-        
-        .flicker-2 {
-          animation: flicker 6s infinite;
-          animation-delay: 1s;
-        }
-        
-        .flicker-3 {
-          animation: flicker 7s infinite;
-          animation-delay: 2s;
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px) scale(1);
-            filter: drop-shadow(0 0 60px rgba(255,140,0,0.4)) drop-shadow(0 0 100px rgba(255,100,0,0.3));
-          }
-          50% {
-            transform: translateY(-40px) scale(1.15);
-            filter: drop-shadow(0 0 100px rgba(255,140,0,0.8)) drop-shadow(0 0 160px rgba(255,100,0,0.7));
-          }
-        }
-
-        .float-animation {
-          animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-          0% {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 25%, #ffffff 50%, #f5f5f5 75%, #ffffff 100%);
-            background-size: 400% 400%;
-            background-position: 0% 50%;
-          }
-          50% {
-            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 25%, #f5f5f5 50%, #ffffff 75%, #f5f5f5 100%);
-            background-size: 400% 400%;
-            background-position: 100% 50%;
-          }
-          100% {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 25%, #ffffff 50%, #f5f5f5 75%, #ffffff 100%);
-            background-size: 400% 400%;
-            background-position: 0% 50%;
-          }
-        }
-
-        .gradient-animation {
-          animation: gradientShift 6s ease infinite;
-          background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 25%, #ffffff 50%, #f5f5f5 75%, #ffffff 100%);
-          background-size: 400% 400%;
-        }
-
-      `}</style>
-    </div>
-  )
+    </>
+  );
 }

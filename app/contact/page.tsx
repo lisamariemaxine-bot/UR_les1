@@ -8,15 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/toast"
 
 const contactSchema = z.object({
-  name: z.string().min(2, "Vul een geldige naam in (minimaal 2 tekens)."),
+  name: z.string().min(2, "Vul een geldige naam in."),
   email: z.string().email("Vul een geldig e-mailadres in."),
-  subject: z.string().min(3, "Vul een onderwerp in (minimaal 3 tekens)."),
-  message: z.string().min(10, "Uw bericht moet minimaal 10 tekens bevatten."),
+  message: z.string().min(10, "Uw bericht is te kort."),
 })
 
 type ContactFormValues = z.infer<typeof contactSchema>
@@ -26,144 +24,108 @@ export default function ContactForm() {
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    },
+    defaultValues: { name: "", email: "", message: "" },
   })
 
   async function onSubmit(_: ContactFormValues) {
     setLoading(true)
     await new Promise((r) => setTimeout(r, 1200))
     setLoading(false)
-    toast.success("Uw bericht is succesvol verzonden.")
+    toast.success("Bericht verzonden.")
     form.reset()
   }
 
   return (
-    <main className="relative min-h-screen bg-white px-4 pb-16 pt-28 md:px-10 lg:px-16">
-
-      <section className="relative mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
-        <div className="slide-up [animation-delay:0.08s]">
-          <p className="mb-5 inline-block border border-black/20 bg-white/70 px-4 py-1 text-xs uppercase tracking-[0.28em] text-black/70 backdrop-blur">
-            Contactinformatie
-          </p>
-          <h1
-            className="text-5xl font-bold leading-[0.95] tracking-tight text-[#1f1611] md:text-6xl"
-            style={{ fontFamily: "Georgia, Times, serif" }}
-          >
-            Contact
+    // Achtergrond ingesteld op #FAE170 (Sinopia Background)
+    <main className="min-h-screen w-full font-sans uppercase select-none p-8 md:p-16" style={{ backgroundColor: '#FAE170', color: '#1A1A1A' }}>
+      
+      {/* Header Sectie */}
+      <header className="flex flex-col md:flex-row justify-between items-end border-b border-black/10 pb-6 mb-16">
+        <div className="relative">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none">
+            GET IN<br />TOUCH
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-[#2a1f18]/85 md:text-lg">
-            Heeft u een vraag, voorstel of interesse in een samenwerking? Neem gerust contact op. Ik reageer zo spoedig mogelijk.
-          </p>
+        </div>
+        <div className="mt-8 md:mt-0"></div>
+      </header>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <Card className="slide-up rounded-none border-black/10 bg-white [animation-delay:0.14s]">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-[#1f1611]">Email</CardTitle>
-                <CardDescription className="text-[#4f3a2c]">lisa@example.com</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="slide-up rounded-none border-black/10 bg-white [animation-delay:0.2s]">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-[#1f1611]">Locatie</CardTitle>
-                <CardDescription className="text-[#4f3a2c]">Belgie</CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+        {/* Linker Kolom: Info */}
+        <div className="md:col-span-6 space-y-10">
+          <section>
+            <h2 className="text-xs font-bold tracking-[0.2em] text-black/40 mb-8">Information</h2>
+            <div className="space-y-8">
+              <div>
+                <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Electronic Mail</p>
+                <p className="text-lg font-bold tracking-tight">HELLO@EMAIL.COM</p>
+              </div>
+              <div>
+                <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Geographic Base</p>
+                <p className="text-lg font-bold tracking-tight">ANTWERP, BE</p>
+              </div>
+            </div>
+          </section>
+
+          <p className="normal-case italic text-gray-500 text-sm leading-relaxed max-w-sm">
+            Ik sta open voor nieuwe uitdagingen en interessante samenwerkingen. 
+            Stuur een bericht en ik neem zo spoedig mogelijk contact op.
+          </p>
         </div>
 
-        <Card className="slide-up rounded-none border-0 bg-white/86 shadow-[0_24px_48px_rgba(37,20,9,0.12)] backdrop-blur [animation-delay:0.22s]">
-          <CardHeader>
-            <CardTitle className="text-2xl text-[#1f1611]">Stuur een bericht</CardTitle>
-            <CardDescription className="text-[#4f3a2c]">
-              U ontvangt doorgaans binnen 1-2 werkdagen een reactie.
-            </CardDescription>
-          </CardHeader>
+        {/* Rechter Kolom: Formulier */}
+        <div className="md:col-span-6 border border-black/10 p-8 md:p-10">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-1">
+              <Label className="text-[9px] font-mono tracking-widest opacity-40">NAME</Label>
+              <Input
+                {...form.register("name")}
+                className="rounded-none border-0 border-b border-black/10 bg-transparent px-0 text-sm font-bold uppercase focus-visible:ring-0 focus-visible:border-black transition-colors placeholder:text-black/20"
+                placeholder="YOUR NAME"
+              />
+              {form.formState.errors.name && (
+                <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-tighter">{form.formState.errors.name.message}</p>
+              )}
+            </div>
 
-          <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-[#2b1f17]">Naam</Label>
-                <Input
-                  {...form.register("name")}
-                  className="border-[#d8c7b7] bg-white/90 focus-visible:ring-[#b1784e]"
-                  placeholder="Uw volledige naam"
-                />
-                {form.formState.errors.name && (
-                  <p className="text-sm text-red-600">{form.formState.errors.name.message}</p>
-                )}
-              </div>
+            <div className="space-y-1">
+              <Label className="text-[9px] font-mono tracking-widest opacity-40">EMAIL</Label>
+              <Input
+                type="email"
+                {...form.register("email")}
+                className="rounded-none border-0 border-b border-black/10 bg-transparent px-0 text-sm font-bold uppercase focus-visible:ring-0 focus-visible:border-black transition-colors placeholder:text-black/20"
+                placeholder="EMAIL@PROVIDER.COM"
+              />
+              {form.formState.errors.email && (
+                <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-tighter">{form.formState.errors.email.message}</p>
+              )}
+            </div>
 
-              <div className="space-y-2">
-                <Label className="text-[#2b1f17]">Email</Label>
-                <Input
-                  type="email"
-                  {...form.register("email")}
-                  className="border-[#d8c7b7] bg-white/90 focus-visible:ring-[#b1784e]"
-                  placeholder="naam@voorbeeld.be"
-                />
-                {form.formState.errors.email && (
-                  <p className="text-sm text-red-600">{form.formState.errors.email.message}</p>
-                )}
-              </div>
+            <div className="space-y-1">
+              <Label className="text-[9px] font-mono tracking-widest opacity-40">MESSAGE</Label>
+              <Textarea
+                rows={4}
+                {...form.register("message")}
+                className="rounded-none border-0 border-b border-black/10 bg-transparent px-0 text-sm font-bold uppercase focus-visible:ring-0 focus-visible:border-black transition-colors resize-none placeholder:text-black/20"
+                placeholder="YOUR INQUIRY..."
+              />
+              {form.formState.errors.message && (
+                <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-tighter">{form.formState.errors.message.message}</p>
+              )}
+            </div>
 
-              <div className="space-y-2">
-                <Label className="text-[#2b1f17]">Onderwerp</Label>
-                <Input
-                  {...form.register("subject")}
-                  className="border-[#d8c7b7] bg-white/90 focus-visible:ring-[#b1784e]"
-                  placeholder="Onderwerp van uw bericht"
-                />
-                {form.formState.errors.subject && (
-                  <p className="text-sm text-red-600">{form.formState.errors.subject.message}</p>
-                )}
-              </div>
+            <Button
+              className="w-full h-12 rounded-none bg-black text-white font-bold uppercase tracking-[0.3em] transition-all text-[10px] 
+                         hover:bg-[#125503] active:bg-[#C3F380] active:text-[#125503]"
+              disabled={loading}
+            >
+              {loading ? "TRANSMITTING..." : "SEND MESSAGE"}
+            </Button>
+          </form>
+        </div>
+      </div>
 
-              <div className="space-y-2">
-                <Label className="text-[#2b1f17]">Bericht</Label>
-                <Textarea
-                  rows={6}
-                  {...form.register("message")}
-                  className="border-[#d8c7b7] bg-white/90 focus-visible:ring-[#b1784e]"
-                  placeholder="Beschrijf uw vraag of project zo concreet mogelijk."
-                />
-                {form.formState.errors.message && (
-                  <p className="text-sm text-red-600">{form.formState.errors.message.message}</p>
-                )}
-              </div>
-
-              <Button
-                className="w-full bg-[#1f1611] text-white hover:bg-[#3a281d]"
-                disabled={loading}
-              >
-                {loading ? "Bericht wordt verzonden..." : "Bericht verzenden"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </section>
-
-      <style jsx>{`
-        .slide-up {
-          opacity: 0;
-          animation: contactSlideUp 0.75s cubic-bezier(0.2, 0.75, 0.2, 1) forwards;
-        }
-
-        @keyframes contactSlideUp {
-          from {
-            opacity: 0;
-            transform: translateY(24px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+      <footer className="mt-32 pt-6 border-t border-black/5 opacity-30">
+      </footer>
     </main>
   )
 }

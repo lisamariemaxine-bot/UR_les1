@@ -100,7 +100,7 @@ function TextAreaField({
 
 function SaveBar({ onSave, saved }: { onSave: () => void; saved: boolean }) {
   return (
-    <div className="flex items-center gap-4 pt-4">
+    <div className="flex items-center gap-4 pt-4 pb-10">
       <button
         type="button"
         onClick={onSave}
@@ -124,7 +124,7 @@ export default function AdminUserPage() {
   const [activeSection, setActiveSection] = useState<Section>("profile");
   const [savedSection, setSavedSection] = useState<Section | null>(null);
   
-  const bgColor = '#C3F380'; // Background groen uit pallet
+  const bgColor = '#C3F380'; 
 
   const [profile, setProfile] = useState<ProfileData>({
     firstName: "LISA",
@@ -166,22 +166,23 @@ export default function AdminUserPage() {
   ];
 
   return (
-    <div className="min-h-screen pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
-      <div className="flex min-h-[calc(100vh-5rem)]">
+    <div className="min-h-screen pt-10 md:pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
+      {/* Container: flex-col op mobiel, flex-row op desktop */}
+      <div className="flex flex-col md:flex-row min-h-[calc(100vh-5rem)]">
         
-        {/* ── Sidebar ── */}
-        <aside className="w-64 shrink-0 border-r border-black/5 bg-transparent px-0 py-10">
-          <p className="px-8 mb-8 text-[10px] uppercase tracking-[0.3em] font-black text-black/20">
+        {/* ── Sidebar / Top Nav ── */}
+        <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-black/10 bg-transparent px-3 md:px-0 py-4 md:py-10">
+          <p className="hidden md:block px-8 mb-8 text-[10px] uppercase tracking-[0.3em] font-black text-black/20">
             Navigation
           </p>
-          <nav className="flex flex-col">
+          <nav className="flex flex-row md:flex-col overflow-x-auto no-scrollbar">
             {navItems.map(({ key, label }) => (
               <button
                 key={key}
                 onClick={() => setActiveSection(key)}
-                className={`px-8 py-4 text-left text-xs font-black uppercase tracking-widest transition-all ${
+                className={`px-4 md:px-8 py-3 md:py-4 text-left text-[10px] md:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                   activeSection === key
-                    ? "text-black border-r-4 border-black"
+                    ? "text-black border-b-2 md:border-b-0 md:border-r-4 border-black"
                     : "text-black/30 hover:text-black"
                 }`}
               >
@@ -191,30 +192,30 @@ export default function AdminUserPage() {
           </nav>
         </aside>
 
-        {/* ── Main area ── */}
-        <main className="flex-1 px-12 py-10 max-w-4xl">
+        {/* ── Main area: px-3 op mobiel, px-12 op desktop ── */}
+        <main className="flex-1 px-3 md:px-12 py-10 max-w-4xl overflow-x-hidden">
 
           {/* ── PROFILE ── */}
           {activeSection === "profile" && (
             <section className="animate-in fade-in duration-500">
-              <h1 className="text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profile</h1>
-              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-12">User_Identity_Node</p>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profile</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">User_Identity_Node</p>
 
-              <div className="flex items-start gap-10 mb-12">
+              <div className="flex flex-col md:flex-row items-start gap-6 md:gap-10 mb-12">
                 <div className="shrink-0">
                   {profile.avatar ? (
-                    <img src={profile.avatar} alt="Avatar" className="w-24 h-24 object-cover grayscale border border-black/10" />
+                    <img src={profile.avatar} alt="Avatar" className="w-20 h-20 md:w-24 md:h-24 object-cover grayscale border border-black/10" />
                   ) : (
-                    <div className="w-24 h-24 bg-black/5 border border-black/10 flex items-center justify-center text-black/20 text-[10px] font-black uppercase">No_Img</div>
+                    <div className="w-20 h-20 md:w-24 md:h-24 bg-black/5 border border-black/10 flex items-center justify-center text-black/20 text-[10px] font-black uppercase">No_Img</div>
                   )}
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 w-full">
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Profile photo</p>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleAvatarChange}
-                    className="block text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-[#C3F380] file:cursor-pointer hover:file:opacity-80"
+                    className="block text-[9px] md:text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-[#C3F380] file:cursor-pointer hover:file:opacity-80 w-full"
                   />
                   {profile.avatar && (
                     <button
@@ -228,7 +229,7 @@ export default function AdminUserPage() {
                 </div>
               </div>
 
-              <div className="grid gap-10 sm:grid-cols-2 mb-8">
+              <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 mb-8">
                 <Field label="First name" name="firstName" value={profile.firstName} onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))} />
                 <Field label="Last name" name="lastName" value={profile.lastName} onChange={(e) => setProfile((p) => ({ ...p, lastName: e.target.value }))} />
                 <Field label="Username" name="username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
@@ -248,8 +249,8 @@ export default function AdminUserPage() {
           {/* ── SETTINGS ── */}
           {activeSection === "settings" && (
             <section className="animate-in fade-in duration-500">
-              <h1 className="text-6xl font-black tracking-tighter uppercase mb-2 text-black">Settings</h1>
-              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-12">System_Configuration</p>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Settings</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">System_Configuration</p>
 
               <div className="flex flex-col gap-10 mb-12">
                 <div className="relative">
@@ -288,9 +289,9 @@ export default function AdminUserPage() {
                   </label>
                 </div>
 
-                <div className="border-t border-black/5 pt-10">
+                <div className="border-t border-black/10 pt-10">
                   <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-8">Security</p>
-                  <div className="grid gap-10 sm:grid-cols-2">
+                  <div className="grid gap-10 grid-cols-1 sm:grid-cols-2">
                     <Field label="New password" name="newPassword" value="" onChange={() => {}} type="password" />
                     <Field label="Confirm password" name="confirmPassword" value="" onChange={() => {}} type="password" />
                   </div>

@@ -36,32 +36,32 @@ export default function ContactForm() {
   }
 
   return (
-    // Achtergrond ingesteld op #FAE170 (Sinopia Background)
-    <main className="min-h-screen w-full font-sans uppercase select-none p-8 md:p-16" style={{ backgroundColor: '#FAE170', color: '#1A1A1A' }}>
+    // Mobiel: px-3 voor minimale witruimte | Desktop: md:p-16 voor originele stijl
+    <main className="min-h-screen w-full font-sans uppercase select-none px-3 py-8 md:p-16 overflow-x-hidden" style={{ backgroundColor: '#FAE170', color: '#1A1A1A' }}>
       
       {/* Header Sectie */}
-      <header className="flex flex-col md:flex-row justify-between items-end border-b border-black/10 pb-6 mb-16">
-        <div className="relative">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-none">
+      <header className="flex flex-col md:flex-row justify-between items-end border-b border-black/10 pb-6 mb-12 md:mb-16">
+        <div className="relative w-full">
+          {/* Tekstgrootte aangepast voor mobiel */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-none">
             GET IN<br />TOUCH
           </h1>
         </div>
-        <div className="mt-8 md:mt-0"></div>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12">
         {/* Linker Kolom: Info */}
-        <div className="md:col-span-6 space-y-10">
+        <div className="md:col-span-6 space-y-8 md:space-y-10">
           <section>
-            <h2 className="text-xs font-bold tracking-[0.2em] text-black/40 mb-8">Information</h2>
-            <div className="space-y-8">
+            <h2 className="text-xs font-bold tracking-[0.2em] text-black/40 mb-6 md:mb-8">Information</h2>
+            <div className="space-y-6 md:space-y-8">
               <div>
                 <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Electronic Mail</p>
-                <p className="text-lg font-bold tracking-tight">HELLO@EMAIL.COM</p>
+                <p className="text-base md:text-lg font-bold tracking-tight">HELLO@EMAIL.COM</p>
               </div>
               <div>
                 <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Geographic Base</p>
-                <p className="text-lg font-bold tracking-tight">ANTWERP, BE</p>
+                <p className="text-base md:text-lg font-bold tracking-tight">ANTWERP, BE</p>
               </div>
             </div>
           </section>
@@ -73,7 +73,8 @@ export default function ContactForm() {
         </div>
 
         {/* Rechter Kolom: Formulier */}
-        <div className="md:col-span-6 border border-black/10 p-8 md:p-10">
+        {/* Padding op mobiel naar p-5 voor meer schrijfruimte */}
+        <div className="md:col-span-6 border border-black/10 p-5 md:p-10 bg-black/5 md:bg-transparent">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-1">
               <Label className="text-[9px] font-mono tracking-widest opacity-40">NAME</Label>
@@ -124,7 +125,7 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <footer className="mt-32 pt-6 border-t border-black/5 opacity-30">
+      <footer className="mt-20 md:mt-32 pt-6 border-t border-black/5 opacity-30">
       </footer>
     </main>
   )

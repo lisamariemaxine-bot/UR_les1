@@ -45,9 +45,8 @@ export default function AdminPage() {
   const [imageUploading, setImageUploading] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-  // Kleuren aangepast: Geel verwijderd, Pink gebruikt voor accenten
   const bgColor = '#FFFFFF'; 
-  const accentColor = '#FDC5C6'; // Het roze uit je palet
+  const accentColor = '#FDC5C6'; 
 
   const previewParagraphs = form.websiteText
     .split("\n")
@@ -125,32 +124,32 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
-      <div className="mx-auto w-full max-w-[1280px] px-12">
+    <div className="min-h-screen pt-10 md:pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
+      <div className="mx-auto w-full max-w-[1280px] px-3 md:px-12">
         
         {/* ── LIVE PREVIEW AREA ── */}
         <div className="grid gap-8 lg:grid-cols-1">
           <div className="justify-self-start w-full max-w-[920px]">
-            <div className="py-10">
+            <div className="py-6 md:py-10">
               <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30">
                 {form.introLabel.trim() || 'Selected introduction'}
               </p>
-              <h2 className="mt-4 text-7xl font-black uppercase tracking-tighter leading-[0.85] text-black">
+              <h2 className="mt-4 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] text-black">
                 {form.name.trim() || 'Your Name'}
               </h2>
               <p className="mt-6 max-w-md text-sm font-bold uppercase leading-relaxed text-black/60">
                 {form.bio.trim() || 'A short portfolio introduction will appear here.'}
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap gap-2 md:gap-3">
                 {[form.tagOne, form.tagTwo].map((tag, i) => tag.trim() && (
-                  <div key={i} style={{ borderColor: accentColor }} className="border-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-black">
+                  <div key={i} style={{ borderColor: accentColor }} className="border px-3 py-1.5 md:px-4 md:py-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-black">
                     {tag}
                   </div>
                 ))}
               </div>
 
-              <div className="mt-12 border-t-2 border-black pt-8">
+              <div className="mt-12 border-t border-black pt-8">
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30">
                   {form.textSectionTitle.trim() || 'Text section'}
                 </p>
@@ -164,19 +163,18 @@ export default function AdminPage() {
               <div className="mt-12 grid gap-10 lg:grid-cols-2">
                 <div>
                   {form.profileImage ? (
-                    <img src={form.profileImage} alt="Preview" className="aspect-[4/5] w-full grayscale border-2 border-black object-cover" />
+                    <img src={form.profileImage} alt="Preview" className="aspect-[4/5] w-full grayscale border border-black object-cover" />
                   ) : (
-                    <div className="aspect-[4/5] bg-black/5 border-2 border-black flex items-center justify-center text-[10px] font-black uppercase text-black/20">No_Img</div>
+                    <div className="aspect-[4/5] bg-black/5 border border-black flex items-center justify-center text-[10px] font-black uppercase text-black/20">No_Img</div>
                   )}
-                  <div className="mt-8 border-t-2 border-black pt-6">
+                  <div className="mt-8 border-t border-black pt-6">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30">{form.contactTitle.trim() || 'Contact'}</p>
-                    <p className="mt-2 text-sm font-black uppercase">{form.email.trim() || 'name@example.com'}</p>
+                    <p className="mt-2 text-sm font-black uppercase break-all">{form.email.trim() || 'name@example.com'}</p>
                   </div>
                 </div>
 
-                <div className="space-y-8">
-                  {/* Achtergrond aangepast naar Pink */}
-                  <div style={{ backgroundColor: accentColor }} className="text-black p-8">
+                <div className="space-y-6 md:space-y-8">
+                  <div style={{ backgroundColor: accentColor }} className="text-black p-6 md:p-8">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-50 mb-4">
                       {form.portfolioConceptTitle.trim() || 'Concept'}
                     </p>
@@ -184,7 +182,7 @@ export default function AdminPage() {
                       {form.portfolioConcept.trim() || 'Describe your vision here.'}
                     </p>
                   </div>
-                  <div className="border-2 border-black p-8">
+                  <div className="border border-black p-6 md:p-8">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30 mb-4">Details</p>
                     <ul className="space-y-2 text-xs font-black uppercase">
                       <li>• Print and editorial storytelling</li>
@@ -198,27 +196,27 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* ── EDITOR PANEL (PINK) ── */}
-        {isEditorOpen && <div className="fixed inset-0 z-20 bg-black/20 backdrop-blur-sm" onClick={() => setIsEditorOpen(false)} />}
+        {/* ── EDITOR PANEL ── */}
+        {isEditorOpen && <div className="fixed inset-0 z-20 bg-black/40 backdrop-blur-sm" onClick={() => setIsEditorOpen(false)} />}
         
-        <div className={`fixed bottom-0 right-0 top-0 z-30 w-full max-w-[520px] shadow-2xl transition-transform duration-500 ease-in-out ${isEditorOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        <div className={`fixed bottom-0 right-0 top-0 z-50 w-full md:max-w-[520px] shadow-2xl transition-transform duration-500 ease-in-out ${isEditorOpen ? 'translate-x-0' : 'translate-x-full'}`}
              style={{ backgroundColor: accentColor }}>
           
-          <div className="flex h-full flex-col overflow-y-auto p-10 pt-20">
-            <div className="flex items-start justify-between mb-12">
+          <div className="flex h-full flex-col overflow-y-auto p-6 md:p-10 pt-16 md:pt-20">
+            <div className="flex items-start justify-between mb-8 md:mb-12">
               <div>
-                <h2 className="text-4xl font-black uppercase tracking-tighter text-black">Edit Content</h2>
+                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black">Edit Content</h2>
                 <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-black/40">Interface_Update_Node</p>
               </div>
-              <button onClick={() => setIsEditorOpen(false)} className="text-black hover:rotate-90 transition-transform">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M6 6L18 18M18 6L6 18" /></svg>
+              <button onClick={() => setIsEditorOpen(false)} className="text-black p-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6L18 18M18 6L6 18" /></svg>
               </button>
             </div>
 
             {loading ? (
               <div className="text-[10px] font-black uppercase tracking-[0.3em] animate-pulse">Loading_System_Data...</div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-8 md:gap-10 pb-10">
                 
                 {[
                   { label: "Intro Label", name: "introLabel" },
@@ -235,7 +233,7 @@ export default function AdminPage() {
                       value={form[f.name as keyof AboutForm]}
                       onChange={handleChange}
                       placeholder={f.label}
-                      className="peer h-12 w-full border-b-2 border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition-colors font-bold uppercase tracking-tight"
+                      className="peer h-12 w-full border-b border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition-colors font-bold uppercase tracking-tight"
                     />
                     <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase tracking-[0.2em] font-black transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-black">
                       {f.label}
@@ -249,8 +247,8 @@ export default function AdminPage() {
                     value={form.bio}
                     onChange={handleChange}
                     rows={3}
+                    className="peer w-full border-b border-black/10 bg-transparent text-sm font-bold uppercase focus:border-black focus:outline-none transition resize-none"
                     placeholder="Bio"
-                    className="peer w-full border-b-2 border-black/10 bg-transparent text-sm font-bold uppercase focus:border-black focus:outline-none transition resize-none"
                   />
                   <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase font-black tracking-widest">Bio</label>
                 </div>
@@ -261,13 +259,13 @@ export default function AdminPage() {
                     value={form.websiteText}
                     onChange={handleChange}
                     rows={5}
+                    className="peer w-full border-b border-black/10 bg-transparent text-sm font-bold uppercase focus:border-black focus:outline-none transition resize-none"
                     placeholder="Website Text"
-                    className="peer w-full border-b-2 border-black/10 bg-transparent text-sm font-bold uppercase focus:border-black focus:outline-none transition resize-none"
                   />
                   <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase font-black tracking-widest">Website Text</label>
                 </div>
 
-                <div className="grid gap-6 sm:grid-cols-2">
+                <div className="grid gap-6 grid-cols-2">
                   {["tagOne", "tagTwo"].map((tag) => (
                     <div key={tag} className="relative">
                       <input
@@ -275,7 +273,7 @@ export default function AdminPage() {
                         name={tag}
                         value={form[tag as keyof AboutForm]}
                         onChange={handleChange}
-                        className="peer h-10 w-full border-b-2 border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition font-bold uppercase"
+                        className="peer h-10 w-full border-b border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition font-bold uppercase"
                         placeholder={tag}
                       />
                       <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase font-black">{tag}</label>
@@ -290,23 +288,23 @@ export default function AdminPage() {
                     accept="image/*"
                     onChange={handleImageChange}
                     disabled={imageUploading}
-                    className="block text-[10px] font-black uppercase file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:opacity-80 disabled:opacity-50"
+                    className="block text-[9px] font-black uppercase file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:opacity-80 disabled:opacity-50"
                   />
                   {form.profileImage && (
-                    <div className="mt-2 relative group w-32 h-32">
+                    <div className="mt-2 relative group w-24 h-24">
                       <img src={form.profileImage} className="w-full h-full object-cover grayscale border border-black/20" />
                       <button type="button" onClick={() => setForm({ ...form, profileImage: "" })} 
-                              className="absolute inset-0 bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-black uppercase">Remove</button>
+                              className="absolute inset-0 bg-black/60 text-white opacity-0 md:group-hover:opacity-100 transition-opacity text-[10px] font-black uppercase">Remove</button>
                     </div>
                   )}
                 </div>
 
-                <div className="mt-6 flex flex-col gap-4">
-                  <button type="submit" className="bg-black py-4 text-[11px] font-black uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black border-2 border-black transition-all">
+                <div className="mt-6 flex flex-col gap-3">
+                  <button type="submit" className="bg-black py-4 text-[11px] font-black uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black border border-black transition-all">
                     Save Changes
                   </button>
                   <button type="button" onClick={() => setForm({ name: "", bio: "", email: "", websiteText: "", profileImage: "", portfolioConcept: "", introLabel: "", tagOne: "", tagTwo: "", textSectionTitle: "", contactTitle: "", portfolioConceptTitle: "" })}
-                          className="border-2 border-black py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black hover:bg-black hover:text-white transition-all">
+                          className="border border-black py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black hover:bg-black hover:text-white transition-all">
                     Reset Form
                   </button>
                 </div>
@@ -317,15 +315,15 @@ export default function AdminPage() {
         </div>
 
         {/* ── FIXED ACTION BUTTONS ── */}
-        <div className={`fixed bottom-10 z-40 flex items-center gap-3 transition-all duration-500 ease-out ${isEditorOpen ? 'right-[550px]' : 'right-12'}`}>
+        <div className={`fixed bottom-6 md:bottom-10 z-[60] flex items-center gap-2 md:gap-3 transition-all duration-500 ease-out ${isEditorOpen ? 'right-6 md:right-[550px]' : 'right-4 md:right-12'}`}>
           <a href="https://ulqvsiebkdt.typeform.com/to/egcpqhQT" target="_blank" rel="noopener noreferrer"
              style={{ backgroundColor: accentColor }}
-             className="px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black hover:bg-black hover:text-white border-2 border-black transition-all shadow-xl">
+             className="px-4 md:px-6 py-2.5 md:py-3 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-black border border-black transition-all shadow-xl">
             Enquête
           </a>
           <button onClick={() => setIsEditorOpen(!isEditorOpen)}
                   style={{ backgroundColor: accentColor }}
-                  className="px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black hover:bg-black hover:text-white border-2 border-black transition-all shadow-xl">
+                  className="px-6 md:px-8 py-2.5 md:py-3 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-black border border-black transition-all shadow-xl">
             {isEditorOpen ? 'Close' : 'Edit'}
           </button>
         </div>

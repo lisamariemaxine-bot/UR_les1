@@ -26,13 +26,13 @@ export default function GlobalNavbar() {
     { label: "Project 3", href: "/project-3", code: "P3", color: "#7523B4" },
   ];
 
-  const crossColor = isSidebarOpen ? "#000000" : "#FF97D0";
+  const crossColor = "#000000";
 
   return (
     <>
       {/* Hamburger / Close Toggle Button */}
       <button
-        className="fixed top-6 left-6 z-[110] flex items-center group focus:outline-none mix-blend-difference"
+        className="fixed top-6 left-6 z-[110] flex items-center group focus:outline-none"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         aria-label="Toggle Menu"
       >

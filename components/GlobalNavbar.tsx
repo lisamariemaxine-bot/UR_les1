@@ -64,43 +64,18 @@ export default function GlobalNavbar() {
         aria-label="Toggle Menu"
       >
         <div className="relative w-8 h-6 md:w-14 md:h-12 overflow-hidden">
-          {/* Absolute bars for precise centering when transformed */}
+          {/* Absolute bars for precise centering when transformed (no window usage) */}
           <span
-            style={{
-              backgroundColor: crossColor,
-              height: isSidebarOpen ? (window?.innerWidth >= 768 ? 5 : 3) : (window?.innerWidth >= 768 ? 5 : 3),
-              left: 0,
-              right: 0,
-              position: 'absolute',
-              transition: 'all 200ms ease',
-              top: isSidebarOpen ? '50%' : '22%',
-              transform: isSidebarOpen ? 'translateY(-50%) rotate(45deg)' : 'translateY(-50%)',
-            }}
+            className={`absolute left-0 right-0 bg-black transition-all duration-200 ${isSidebarOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : 'top-[22%]'} h-[3px] md:h-[5px]`}
+            style={{ backgroundColor: crossColor }}
           />
           <span
-            style={{
-              backgroundColor: crossColor,
-              height: isSidebarOpen ? (window?.innerWidth >= 768 ? 5 : 3) : (window?.innerWidth >= 768 ? 5 : 3),
-              left: 0,
-              right: 0,
-              position: 'absolute',
-              transition: 'all 150ms ease',
-              top: '50%',
-              transform: isSidebarOpen ? 'translateY(-50%) scaleX(0)' : 'translateY(-50%) scaleX(1)',
-              opacity: isSidebarOpen ? 0 : 1,
-            }}
+            className={`absolute left-0 right-0 bg-black transition-all duration-150 top-1/2 -translate-y-1/2 ${isSidebarOpen ? 'opacity-0' : 'opacity-100'} h-[3px] md:h-[5px]`}
+            style={{ backgroundColor: crossColor }}
           />
           <span
-            style={{
-              backgroundColor: crossColor,
-              height: isSidebarOpen ? (window?.innerWidth >= 768 ? 5 : 3) : (window?.innerWidth >= 768 ? 5 : 3),
-              left: 0,
-              right: 0,
-              position: 'absolute',
-              transition: 'all 200ms ease',
-              top: isSidebarOpen ? '50%' : '78%',
-              transform: isSidebarOpen ? 'translateY(-50%) rotate(-45deg)' : 'translateY(-50%)',
-            }}
+            className={`absolute left-0 right-0 bg-black transition-all duration-200 ${isSidebarOpen ? 'top-1/2 -translate-y-1/2 -rotate-45' : 'top-[78%]'} h-[3px] md:h-[5px]`}
+            style={{ backgroundColor: crossColor }}
           />
         </div>
       </button>
@@ -145,7 +120,7 @@ export default function GlobalNavbar() {
                     {link.label}
                   </span>
                 </div>
-                <div className="hidden md:block opacity-0 group-hover:opacity-30 transition-opacity font-mono text-[11px] tracking-widest text-black">
+                <div className="hidden md:block opacity-0 group-hover:opacity-30 transition-opacity font-mono font-black text-[9px] tracking-widest text-black uppercase">
                   {link.label === 'Project 1' ? 'leporello' :
                    link.label === 'Project 2' ? 'FIBONACCI' :
                    link.label === 'Project 3' ? 'Acoustic Laptop' :

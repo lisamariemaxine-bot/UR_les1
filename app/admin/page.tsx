@@ -40,34 +40,12 @@ export default function AdminProjectPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = async () => {
+    reader.onload = () => {
       const url = typeof reader.result === "string" ? reader.result : "";
-      // show immediate preview
       if (target === 'main') {
         setForm(prev => ({ ...prev, mainImage: url }));
       } else {
         handleGridImageChange(target, url);
-      }
-
-      // upload to server which forwards to Cloudinary
-      try {
-        const resp = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dataUrl: url, filename: file.name }),
-        })
-        const json = await resp.json()
-        if (json.url) {
-          if (target === 'main') {
-            setForm(prev => ({ ...prev, mainImage: json.url }));
-          } else {
-            handleGridImageChange(target, json.url);
-          }
-        } else {
-          console.error('Upload failed', json)
-        }
-      } catch (err) {
-        console.error('Upload error', err)
       }
     };
     reader.readAsDataURL(file);

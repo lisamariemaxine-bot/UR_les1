@@ -64,25 +64,26 @@ export default function GlobalNavbar() {
         aria-label="Toggle Menu"
       >
         <div className="relative w-8 h-6 md:w-14 md:h-12 overflow-hidden">
-          {/* Absolute bars for precise centering when transformed (no window usage) */}
-          <span
-            className={`absolute left-0 right-0 bg-black transition-all duration-200 ${isSidebarOpen ? 'top-1/2 -translate-y-1/2 rotate-45' : 'top-[22%]'} h-[3px] md:h-[5px]`}
-            style={{ backgroundColor: crossColor }}
-          />
-          <span
-            className={`absolute left-0 right-0 bg-black transition-all duration-150 top-1/2 -translate-y-1/2 ${isSidebarOpen ? 'opacity-0' : 'opacity-100'} h-[3px] md:h-[5px]`}
-            style={{ backgroundColor: crossColor }}
-          />
-          <span
-            className={`absolute left-0 right-0 bg-black transition-all duration-200 ${isSidebarOpen ? 'top-1/2 -translate-y-1/2 -rotate-45' : 'top-[78%]'} h-[3px] md:h-[5px]`}
-            style={{ backgroundColor: crossColor }}
-          />
+          <div className="flex flex-col justify-between h-full">
+            <span
+              className={`bg-black block w-full h-[3px] md:h-[5px] transition-all duration-200 ${isSidebarOpen ? 'absolute left-0 right-0 top-1/2 -translate-y-1/2 rotate-45' : ''}`}
+              style={{ backgroundColor: crossColor }}
+            />
+            <span
+              className={`bg-black block w-full h-[3px] md:h-[5px] transition-opacity duration-150 ${isSidebarOpen ? 'opacity-0' : 'opacity-100'}`}
+              style={{ backgroundColor: crossColor }}
+            />
+            <span
+              className={`bg-black block w-full h-[3px] md:h-[5px] transition-all duration-200 ${isSidebarOpen ? 'absolute left-0 right-0 top-1/2 -translate-y-1/2 -rotate-45' : ''}`}
+              style={{ backgroundColor: crossColor }}
+            />
+          </div>
         </div>
       </button>
 
       <SidebarSlider isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)}>
         <div 
-          className="fixed inset-0 w-screen h-screen flex flex-col p-8 md:p-16 uppercase transition-colors duration-700 ease-in-out"
+          className="fixed inset-0 w-screen min-h-[100dvh] flex flex-col p-8 md:p-16 uppercase transition-colors duration-700 ease-in-out"
           style={{ backgroundColor: menuBgColor }}
         >
           {/* Menu Header - INDEX veranderd naar MENU en subtitel verwijderd */}

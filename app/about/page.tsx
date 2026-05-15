@@ -18,7 +18,7 @@ export default function AboutPage() {
       <FontLink />
       <div 
         /* Mobiel: px-2 | Desktop: md:p-12 */
-        className="min-h-screen w-full font-sans uppercase select-none px-2 py-6 md:p-12 overflow-x-hidden"
+        className="min-h-[100dvh] w-full font-sans uppercase select-none px-2 py-6 md:p-12 overflow-x-hidden"
         style={{ backgroundColor: pureWhite, color: '#000000' }}
       >
         {/* Header Sectie */}

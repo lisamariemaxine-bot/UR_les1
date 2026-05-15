@@ -1,333 +1,307 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
-type AboutForm = {
-  name: string;
+type Section = "profile" | "settings";
+
+type ProfileData = {
+  firstName: string;
+  lastName: string;
+  username: string;
   bio: string;
   email: string;
-  websiteText: string;
-  profileImage: string;
-  portfolioConcept: string;
-  introLabel: string;
-  tagOne: string;
-  tagTwo: string;
-  textSectionTitle: string;
-  contactTitle: string;
-  portfolioConceptTitle: string;
+  phone: string;
+  location: string;
+  avatar: string;
 };
 
-type FormErrors = {
-  [key in keyof AboutForm]: string;
+type SettingsData = {
+  language: string;
+  timezone: string;
+  emailNotifications: boolean;
+  publicProfile: boolean;
 };
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 const SANS_FONT = { 
   fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' 
 };
 
-// ── Main Component ───────────────────────────────────────────────────────────
+function Field({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+}) {
+  return (
+    <div className="relative">
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={label}
+        autoComplete="off"
+        style={SANS_FONT}
+        className="peer h-12 w-full border-b-2 border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition-colors font-bold uppercase tracking-tight"
+      />
+      <label
+        style={SANS_FONT}
+        className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase tracking-[0.2em] font-black transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-black/20 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-black"
+      >
+        {label}
+      </label>
+    </div>
+  );
+}
 
-export default function AdminPage() {
-  const [form, setForm] = useState<AboutForm>({
-    name: "", bio: "", email: "", websiteText: "", profileImage: "",
-    portfolioConcept: "", introLabel: "", tagOne: "", tagTwo: "",
-    textSectionTitle: "", contactTitle: "", portfolioConceptTitle: "",
+function TextAreaField({
+  label,
+  name,
+  value,
+  onChange,
+  rows = 4,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  rows?: number;
+}) {
+  return (
+    <div className="relative">
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={label}
+        rows={rows}
+        style={SANS_FONT}
+        className="peer w-full border-b-2 border-black/10 bg-transparent text-sm text-black placeholder-transparent focus:border-black focus:outline-none transition resize-none font-bold uppercase tracking-tight"
+      />
+      <label
+        style={SANS_FONT}
+        className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase tracking-[0.2em] font-black transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:text-black/20 peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-black"
+      >
+        {label}
+      </label>
+    </div>
+  );
+}
+
+function SaveBar({ onSave, saved }: { onSave: () => void; saved: boolean }) {
+  return (
+    <div className="flex items-center gap-4 pt-4 pb-10">
+      <button
+        type="button"
+        onClick={onSave}
+        style={SANS_FONT}
+        className="bg-black px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#C3F380] transition-all hover:opacity-80 active:scale-95"
+      >
+        Save changes
+      </button>
+      {saved && (
+        <span style={SANS_FONT} className="text-[10px] text-black/40 uppercase tracking-[0.2em] font-bold italic">
+          Saved.
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ── Main page ─────────────────────────────────────────────────────────────────
+
+export default function AdminUserPage() {
+  const [activeSection, setActiveSection] = useState<Section>("profile");
+  const [savedSection, setSavedSection] = useState<Section | null>(null);
+  
+  const bgColor = '#C3F380'; 
+
+  const [profile, setProfile] = useState<ProfileData>({
+    firstName: "LISA",
+    lastName: "MARIE",
+    username: "avermaet_admin",
+    bio: "Visualizing complex systems.",
+    email: "lisa@studio-avermaet.com",
+    phone: "",
+    location: "ANTWERP",
+    avatar: "",
   });
-  const [errors, setErrors] = useState<FormErrors>({
-    name: "", bio: "", email: "", websiteText: "", profileImage: "",
-    portfolioConcept: "", introLabel: "", tagOne: "", tagTwo: "",
-    textSectionTitle: "", contactTitle: "", portfolioConceptTitle: "",
+
+  const [settings, setSettings] = useState<SettingsData>({
+    language: "English",
+    timezone: "Europe/Brussels",
+    emailNotifications: true,
+    publicProfile: true,
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [imageUploading, setImageUploading] = useState(false);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-  const bgColor = '#FFFFFF'; 
-  const accentColor = '#FDC5C6'; 
-
-  const previewParagraphs = form.websiteText
-    .split("\n")
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
-
-  useEffect(() => {
-    async function fetchAbout() {
-      try {
-        const res = await fetch("/api/about");
-        if (res.ok) {
-          const data = await res.json();
-          setForm(data);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchAbout();
-  }, []);
-
-  function validate() {
-    return true;
+  function markSaved() {
+    setSavedSection(activeSection);
+    setTimeout(() => setSavedSection(null), 2000);
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
-  }
-
-  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setErrors((current) => ({ ...current, profileImage: "Please upload an image file." }));
-      return;
-    }
+    if (!file || !file.type.startsWith("image/")) return;
     const reader = new FileReader();
     reader.onload = () => {
-      const preview = typeof reader.result === "string" ? reader.result : "";
-      setForm((current) => ({ ...current, profileImage: preview }));
+      if (typeof reader.result === "string")
+        setProfile((p) => ({ ...p, avatar: reader.result as string }));
     };
     reader.readAsDataURL(file);
-
-    try {
-      setImageUploading(true);
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/upload-image", { method: "POST", body: formData });
-      if (res.ok) {
-        const data = await res.json();
-        setForm((current) => ({ ...current, profileImage: data.url }));
-        setErrors((current) => ({ ...current, profileImage: "" }));
-      }
-    } catch {
-      setErrors((current) => ({ ...current, profileImage: "Upload failed." }));
-    } finally {
-      setImageUploading(false);
-    }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (validate()) {
-      setSubmitted(true);
-      try {
-        await fetch("/api/about", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-      } catch {}
-      setTimeout(() => setSubmitted(false), 2500);
-    }
-  }
+  const navItems = [
+    { key: "profile" as Section, label: "Profile" },
+    { key: "settings" as Section, label: "Settings" },
+  ];
 
   return (
     <div className="min-h-screen pt-10 md:pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
-      <div className="mx-auto w-full max-w-[1280px] px-3 md:px-12">
+      {/* Container: flex-col op mobiel, flex-row op desktop */}
+      <div className="flex flex-col md:flex-row min-h-[calc(100vh-5rem)]">
         
-        {/* ── LIVE PREVIEW AREA ── */}
-        <div className="grid gap-8 lg:grid-cols-1">
-          <div className="justify-self-start w-full max-w-[920px]">
-            <div className="py-6 md:py-10">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30">
-                {form.introLabel.trim() || 'Selected introduction'}
-              </p>
-              <h2 className="mt-4 text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] text-black">
-                {form.name.trim() || 'Your Name'}
-              </h2>
-              <p className="mt-6 max-w-md text-sm font-bold uppercase leading-relaxed text-black/60">
-                {form.bio.trim() || 'A short portfolio introduction will appear here.'}
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-2 md:gap-3">
-                {[form.tagOne, form.tagTwo].map((tag, i) => tag.trim() && (
-                  <div key={i} style={{ borderColor: accentColor }} className="border px-3 py-1.5 md:px-4 md:py-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-black">
-                    {tag}
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-12 border-t border-black pt-8">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30">
-                  {form.textSectionTitle.trim() || 'Text section'}
-                </p>
-                <div className="mt-6 space-y-4 text-sm font-bold uppercase leading-relaxed text-black">
-                  {(previewParagraphs.length > 0 ? previewParagraphs : ['Live preview text.']).map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-12 grid gap-10 lg:grid-cols-2">
-                <div>
-                  {form.profileImage ? (
-                    <img src={form.profileImage} alt="Preview" className="aspect-[4/5] w-full grayscale border border-black object-cover" />
-                  ) : (
-                    <div className="aspect-[4/5] bg-black/5 border border-black flex items-center justify-center text-[10px] font-black uppercase text-black/20">No_Img</div>
-                  )}
-                  <div className="mt-8 border-t border-black pt-6">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30">{form.contactTitle.trim() || 'Contact'}</p>
-                    <p className="mt-2 text-sm font-black uppercase break-all">{form.email.trim() || 'name@example.com'}</p>
-                  </div>
-                </div>
-
-                <div className="space-y-6 md:space-y-8">
-                  <div style={{ backgroundColor: accentColor }} className="text-black p-6 md:p-8">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-50 mb-4">
-                      {form.portfolioConceptTitle.trim() || 'Concept'}
-                    </p>
-                    <p className="text-sm font-bold uppercase leading-relaxed">
-                      {form.portfolioConcept.trim() || 'Describe your vision here.'}
-                    </p>
-                  </div>
-                  <div className="border border-black p-6 md:p-8">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30 mb-4">Details</p>
-                    <ul className="space-y-2 text-xs font-black uppercase">
-                      <li>• Print and editorial storytelling</li>
-                      <li>• Concept-driven visual research</li>
-                      <li>• Careful typography</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── EDITOR PANEL ── */}
-        {isEditorOpen && <div className="fixed inset-0 z-20 bg-black/40 backdrop-blur-sm" onClick={() => setIsEditorOpen(false)} />}
-        
-        <div className={`fixed bottom-0 right-0 top-0 z-50 w-full md:max-w-[520px] shadow-2xl transition-transform duration-500 ease-in-out ${isEditorOpen ? 'translate-x-0' : 'translate-x-full'}`}
-             style={{ backgroundColor: accentColor }}>
-          
-          <div className="flex h-full flex-col overflow-y-auto p-6 md:p-10 pt-16 md:pt-20">
-            <div className="flex items-start justify-between mb-8 md:mb-12">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black">Edit Content</h2>
-                <p className="mt-2 text-[10px] font-black uppercase tracking-widest text-black/40">Interface_Update_Node</p>
-              </div>
-              <button onClick={() => setIsEditorOpen(false)} className="text-black p-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6L18 18M18 6L6 18" /></svg>
+        {/* ── Sidebar / Top Nav ── */}
+        <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-black/10 bg-transparent px-3 md:px-0 py-4 md:py-10">
+          <p className="hidden md:block px-8 mb-8 text-[10px] uppercase tracking-[0.3em] font-black text-black/20">
+            Navigation
+          </p>
+          <nav className="flex flex-row md:flex-col overflow-x-auto no-scrollbar">
+            {navItems.map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => setActiveSection(key)}
+                className={`px-4 md:px-8 py-3 md:py-4 text-left text-[10px] md:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${
+                  activeSection === key
+                    ? "text-black border-b-2 md:border-b-0 md:border-r-4 border-black"
+                    : "text-black/30 hover:text-black"
+                }`}
+              >
+                {label}
               </button>
-            </div>
+            ))}
+          </nav>
+        </aside>
 
-            {loading ? (
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] animate-pulse">Loading_System_Data...</div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-8 md:gap-10 pb-10">
-                
-                {[
-                  { label: "Intro Label", name: "introLabel" },
-                  { label: "Name", name: "name" },
-                  { label: "Text Section Title", name: "textSectionTitle" },
-                  { label: "Contact Title", name: "contactTitle" },
-                  { label: "Concept Title", name: "portfolioConceptTitle" },
-                  { label: "Email", name: "email", type: "email" }
-                ].map((f) => (
-                  <div key={f.name} className="relative">
-                    <input
-                      type={f.type || "text"}
-                      name={f.name}
-                      value={form[f.name as keyof AboutForm]}
-                      onChange={handleChange}
-                      placeholder={f.label}
-                      className="peer h-12 w-full border-b border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition-colors font-bold uppercase tracking-tight"
-                    />
-                    <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase tracking-[0.2em] font-black transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3.5 peer-focus:-top-3.5 peer-focus:text-black">
-                      {f.label}
-                    </label>
-                  </div>
-                ))}
+        {/* ── Main area: px-3 op mobiel, px-12 op desktop ── */}
+        <main className="flex-1 px-3 md:px-12 py-10 max-w-4xl overflow-x-hidden">
 
-                <div className="relative">
-                  <textarea
-                    name="bio"
-                    value={form.bio}
-                    onChange={handleChange}
-                    rows={3}
-                    className="peer w-full border-b border-black/10 bg-transparent text-sm font-bold uppercase focus:border-black focus:outline-none transition resize-none"
-                    placeholder="Bio"
-                  />
-                  <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase font-black tracking-widest">Bio</label>
+          {/* ── PROFILE ── */}
+          {activeSection === "profile" && (
+            <section className="animate-in fade-in duration-500">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profile</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">User_Identity_Node</p>
+
+              <div className="flex flex-col md:flex-row items-start gap-6 md:gap-10 mb-12">
+                <div className="shrink-0">
+                  {profile.avatar ? (
+                    <img src={profile.avatar} alt="Avatar" className="w-20 h-20 md:w-24 md:h-24 object-cover grayscale border border-black/10" />
+                  ) : (
+                    <div className="w-20 h-20 md:w-24 md:h-24 bg-black/5 border border-black/10 flex items-center justify-center text-black/20 text-[10px] font-black uppercase">No_Img</div>
+                  )}
                 </div>
-
-                <div className="relative">
-                  <textarea
-                    name="websiteText"
-                    value={form.websiteText}
-                    onChange={handleChange}
-                    rows={5}
-                    className="peer w-full border-b border-black/10 bg-transparent text-sm font-bold uppercase focus:border-black focus:outline-none transition resize-none"
-                    placeholder="Website Text"
-                  />
-                  <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase font-black tracking-widest">Website Text</label>
-                </div>
-
-                <div className="grid gap-6 grid-cols-2">
-                  {["tagOne", "tagTwo"].map((tag) => (
-                    <div key={tag} className="relative">
-                      <input
-                        type="text"
-                        name={tag}
-                        value={form[tag as keyof AboutForm]}
-                        onChange={handleChange}
-                        className="peer h-10 w-full border-b border-black/10 bg-transparent text-black placeholder-transparent focus:border-black focus:outline-none transition font-bold uppercase"
-                        placeholder={tag}
-                      />
-                      <label className="absolute left-0 -top-3.5 text-black/40 text-[10px] uppercase font-black">{tag}</label>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-black/40">Profile Photo</label>
+                <div className="flex flex-col gap-3 w-full">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Profile photo</p>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleImageChange}
-                    disabled={imageUploading}
-                    className="block text-[9px] font-black uppercase file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:opacity-80 disabled:opacity-50"
+                    onChange={handleAvatarChange}
+                    className="block text-[9px] md:text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-[#C3F380] file:cursor-pointer hover:file:opacity-80 w-full"
                   />
-                  {form.profileImage && (
-                    <div className="mt-2 relative group w-24 h-24">
-                      <img src={form.profileImage} className="w-full h-full object-cover grayscale border border-black/20" />
-                      <button type="button" onClick={() => setForm({ ...form, profileImage: "" })} 
-                              className="absolute inset-0 bg-black/60 text-white opacity-0 md:group-hover:opacity-100 transition-opacity text-[10px] font-black uppercase">Remove</button>
-                    </div>
+                  {profile.avatar && (
+                    <button
+                      type="button"
+                      onClick={() => setProfile((p) => ({ ...p, avatar: "" }))}
+                      className="text-[10px] uppercase tracking-[0.14em] text-black/40 hover:text-black transition-colors text-left font-black"
+                    >
+                      Remove photo
+                    </button>
                   )}
                 </div>
+              </div>
 
-                <div className="mt-6 flex flex-col gap-3">
-                  <button type="submit" className="bg-black py-4 text-[11px] font-black uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black border border-black transition-all">
-                    Save Changes
-                  </button>
-                  <button type="button" onClick={() => setForm({ name: "", bio: "", email: "", websiteText: "", profileImage: "", portfolioConcept: "", introLabel: "", tagOne: "", tagTwo: "", textSectionTitle: "", contactTitle: "", portfolioConceptTitle: "" })}
-                          className="border border-black py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black hover:bg-black hover:text-white transition-all">
-                    Reset Form
-                  </button>
+              <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 mb-8">
+                <Field label="First name" name="firstName" value={profile.firstName} onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))} />
+                <Field label="Last name" name="lastName" value={profile.lastName} onChange={(e) => setProfile((p) => ({ ...p, lastName: e.target.value }))} />
+                <Field label="Username" name="username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
+                <Field label="Email" name="email" value={profile.email} onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))} type="email" />
+                <Field label="Phone" name="phone" value={profile.phone} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
+                <Field label="Location" name="location" value={profile.location} onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))} />
+              </div>
+
+              <div className="mb-12">
+                <TextAreaField label="Biography" name="bio" value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
+              </div>
+
+              <SaveBar onSave={markSaved} saved={savedSection === "profile"} />
+            </section>
+          )}
+
+          {/* ── SETTINGS ── */}
+          {activeSection === "settings" && (
+            <section className="animate-in fade-in duration-500">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Settings</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">System_Configuration</p>
+
+              <div className="flex flex-col gap-10 mb-12">
+                <div className="relative">
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Language</label>
+                  <select
+                    value={settings.language}
+                    onChange={(e) => setSettings((s) => ({ ...s, language: e.target.value }))}
+                    className="w-full border-b-2 border-black/10 bg-transparent py-2 text-sm font-bold uppercase text-black focus:border-black focus:outline-none appearance-none cursor-pointer"
+                  >
+                    <option className="bg-[#C3F380]">English</option>
+                    <option className="bg-[#C3F380]">Nederlands</option>
+                    <option className="bg-[#C3F380]">Français</option>
+                    <option className="bg-[#C3F380]">Deutsch</option>
+                  </select>
                 </div>
-                {submitted && <p className="text-[10px] font-black uppercase text-center tracking-widest animate-bounce">System_Updated_Success</p>}
-              </form>
-            )}
-          </div>
-        </div>
 
-        {/* ── FIXED ACTION BUTTONS ── */}
-        <div className={`fixed bottom-6 md:bottom-10 z-[60] flex items-center gap-2 md:gap-3 transition-all duration-500 ease-out ${isEditorOpen ? 'right-6 md:right-[550px]' : 'right-4 md:right-12'}`}>
-          <a href="https://ulqvsiebkdt.typeform.com/to/egcpqhQT" target="_blank" rel="noopener noreferrer"
-             style={{ backgroundColor: accentColor }}
-             className="px-4 md:px-6 py-2.5 md:py-3 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-black border border-black transition-all shadow-xl">
-            Enquête
-          </a>
-          <button onClick={() => setIsEditorOpen(!isEditorOpen)}
-                  style={{ backgroundColor: accentColor }}
-                  className="px-6 md:px-8 py-2.5 md:py-3 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-black border border-black transition-all shadow-xl">
-            {isEditorOpen ? 'Close' : 'Edit'}
-          </button>
-        </div>
+                <div className="flex flex-col gap-6">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Preferences</p>
+                  <label className="flex items-center gap-4 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={settings.emailNotifications}
+                      onChange={(e) => setSettings((s) => ({ ...s, emailNotifications: e.target.checked }))}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Email notifications</span>
+                  </label>
+                  <label className="flex items-center gap-4 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={settings.publicProfile}
+                      onChange={(e) => setSettings((s) => ({ ...s, publicProfile: e.target.checked }))}
+                      className="w-4 h-4 accent-black"
+                    />
+                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Public profile</span>
+                  </label>
+                </div>
 
+                <div className="border-t border-black/10 pt-10">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-8">Security</p>
+                  <div className="grid gap-10 grid-cols-1 sm:grid-cols-2">
+                    <Field label="New password" name="newPassword" value="" onChange={() => {}} type="password" />
+                    <Field label="Confirm password" name="confirmPassword" value="" onChange={() => {}} type="password" />
+                  </div>
+                </div>
+              </div>
+
+              <SaveBar onSave={markSaved} saved={savedSection === "settings"} />
+            </section>
+          )}
+        </main>
       </div>
     </div>
   );

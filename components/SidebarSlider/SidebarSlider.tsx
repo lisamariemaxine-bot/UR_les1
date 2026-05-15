@@ -38,10 +38,10 @@ export default function SidebarSlider({ isOpen, onClose, children }: SidebarSlid
 
           {/* Sidebar */}
           <motion.div
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
             className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 p-4"
           >
             <div className="flex justify-between items-center mb-4">

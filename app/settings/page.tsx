@@ -105,7 +105,7 @@ function SaveBar({ onSave, saved }: { onSave: () => void; saved: boolean }) {
         type="button"
         onClick={onSave}
         style={SANS_FONT}
-        className="bg-black px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#C3F380] transition-all hover:opacity-80 active:scale-95"
+        className="bg-black px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:opacity-80 active:scale-95"
       >
         Save changes
       </button>
@@ -166,7 +166,7 @@ export default function AdminUserPage() {
   ];
 
   return (
-    <div className="min-h-screen pt-10 md:pt-20" style={{ ...SANS_FONT, backgroundColor: bgColor }}>
+    <div className="min-h-screen pt-10 md:pt-20" style={{ ...SANS_FONT, backgroundColor: '#FFFFFF' }}>
       {/* Container: flex-col op mobiel, flex-row op desktop */}
       <div className="flex flex-col md:flex-row min-h-[calc(100vh-5rem)]">
         
@@ -215,7 +215,7 @@ export default function AdminUserPage() {
                     type="file"
                     accept="image/*"
                     onChange={handleAvatarChange}
-                    className="block text-[9px] md:text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-[#C3F380] file:cursor-pointer hover:file:opacity-80 w-full"
+                    className="block text-[9px] md:text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:opacity-80 w-full"
                   />
                   {profile.avatar && (
                     <button

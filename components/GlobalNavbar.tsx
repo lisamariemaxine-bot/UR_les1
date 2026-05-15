@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import SidebarSlider from "@/components/SidebarSlider"
+import { Settings, Edit } from "lucide-react"
 
 export default function GlobalNavbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -62,25 +63,45 @@ export default function GlobalNavbar() {
         onClick={handleToggleMenu}
         aria-label="Toggle Menu"
       >
-        <div className="relative w-8 h-6 flex flex-col justify-between overflow-hidden">
-          <span 
-            className={`w-full h-[3px] transition-all duration-500 ease-in-out origin-center ${
-              isSidebarOpen ? 'rotate-45 translate-y-[10.5px]' : 'group-hover:translate-x-2'
-            }`}
-            style={{ backgroundColor: crossColor }}
-          ></span>
-          <span 
-            className={`w-full h-[3px] transition-all duration-300 ease-in-out ${
-              isSidebarOpen ? 'opacity-0 -translate-x-full' : 'group-hover:-translate-x-2'
-            }`}
-            style={{ backgroundColor: crossColor }}
-          ></span>
-          <span 
-            className={`w-full h-[3px] transition-all duration-500 ease-in-out origin-center ${
-              isSidebarOpen ? '-rotate-45 -translate-y-[10.5px]' : 'group-hover:translate-x-1'
-            }`}
-            style={{ backgroundColor: crossColor }}
-          ></span>
+        <div className="relative w-8 h-6 md:w-14 md:h-12 overflow-hidden">
+          {/* Absolute bars for precise centering when transformed */}
+          <span
+            style={{
+              backgroundColor: crossColor,
+              height: isSidebarOpen ? (window?.innerWidth >= 768 ? 5 : 3) : (window?.innerWidth >= 768 ? 5 : 3),
+              left: 0,
+              right: 0,
+              position: 'absolute',
+              transition: 'all 200ms ease',
+              top: isSidebarOpen ? '50%' : '22%',
+              transform: isSidebarOpen ? 'translateY(-50%) rotate(45deg)' : 'translateY(-50%)',
+            }}
+          />
+          <span
+            style={{
+              backgroundColor: crossColor,
+              height: isSidebarOpen ? (window?.innerWidth >= 768 ? 5 : 3) : (window?.innerWidth >= 768 ? 5 : 3),
+              left: 0,
+              right: 0,
+              position: 'absolute',
+              transition: 'all 150ms ease',
+              top: '50%',
+              transform: isSidebarOpen ? 'translateY(-50%) scaleX(0)' : 'translateY(-50%) scaleX(1)',
+              opacity: isSidebarOpen ? 0 : 1,
+            }}
+          />
+          <span
+            style={{
+              backgroundColor: crossColor,
+              height: isSidebarOpen ? (window?.innerWidth >= 768 ? 5 : 3) : (window?.innerWidth >= 768 ? 5 : 3),
+              left: 0,
+              right: 0,
+              position: 'absolute',
+              transition: 'all 200ms ease',
+              top: isSidebarOpen ? '50%' : '78%',
+              transform: isSidebarOpen ? 'translateY(-50%) rotate(-45deg)' : 'translateY(-50%)',
+            }}
+          />
         </div>
       </button>
 
@@ -91,12 +112,12 @@ export default function GlobalNavbar() {
         >
           {/* Menu Header - INDEX veranderd naar MENU en subtitel verwijderd */}
           <div className="flex justify-between items-end border-b border-black pb-4 mb-8 md:mb-10">
-            <h2 className="ml-10 md:ml-0 font-mono text-xs font-bold tracking-widest text-black">MENU</h2>
+            <h2 className="ml-0 md:ml-12 font-mono text-sm md:text-base font-bold tracking-widest text-black">MENU</h2>
           </div>
 
           {/* Navigation Links in 2 kolommen */}
           <nav
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow max-w-5xl"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow max-w-5xl md:pl-12"
             style={{ alignItems: 'start' }}
           >
             {menuLinks.map((link) => (
@@ -109,11 +130,22 @@ export default function GlobalNavbar() {
                 className="group flex items-center justify-between py-0.5 md:py-1 border-b border-black/10 transition-all duration-300"
               >
                 <div className="flex items-center text-black">
-                  <span className="text-3xl md:text-5xl lg:text-6xl font-serif italic tracking-tighter leading-none transition-all group-hover:pl-4">
+                  {/* conditional icon for Admin and Settings */}
+                  {link.label === 'Admin' && (
+                    <span className="mr-3">
+                      <Edit size={24} />
+                    </span>
+                  )}
+                  {link.label === 'Settings' && (
+                    <span className="mr-3">
+                      <Settings size={24} />
+                    </span>
+                  )}
+                  <span className="text-3xl md:text-6xl lg:text-7xl font-serif italic tracking-tighter leading-none transition-all group-hover:pl-4">
                     {link.label}
                   </span>
                 </div>
-                <div className="hidden md:block opacity-0 group-hover:opacity-30 transition-opacity font-mono text-[9px] tracking-widest text-black">
+                <div className="hidden md:block opacity-0 group-hover:opacity-30 transition-opacity font-mono text-[11px] tracking-widest text-black">
                   {link.label === 'Project 1' ? 'leporello' :
                    link.label === 'Project 2' ? 'FIBONACCI' :
                    link.label === 'Project 3' ? 'Acoustic Laptop' :

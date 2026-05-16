@@ -69,7 +69,7 @@ export default function Project2Page() {
           {/* Rechts: Logo */}
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <img
-              src="/fibo%20logo.png"
+              src="/fibo-logo.png"
               alt="Fibonacci logo"
               style={{ width: '100%', maxWidth: 350, aspectRatio: '1/1', objectFit: 'cover' }}
             />
@@ -79,12 +79,12 @@ export default function Project2Page() {
         {/* Media Grid */}
         <div style={{ width: '100%', padding: '0 16px 64px 16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-            <img src="/fibo%20poster%202.png" alt="fibo poster 2" className="project-img" onClick={() => setModalImg('/fibo%20poster%202.png')} />
-            <img src="/fibo%20poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/fibo%20poster.png')} />
-            <img src="/fibo%20socials.png" alt="fibo socials" className="project-img" style={{ gridColumn: 'span 2' }} onClick={() => setModalImg('/fibo%20socials.png')} />
+            <img src="/fibo-poster-2.png" alt="fibo poster 2" className="project-img" onClick={() => setModalImg('/fibo-poster-2.png')} />
+            <img src="/fibo-poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/fibo-poster.png')} />
+            <img src="/fibo-socials.png" alt="fibo socials" className="project-img" style={{ gridColumn: 'span 2' }} onClick={() => setModalImg('/fibo-socials.png')} />
           </div>
           
-          <img src="/fibo%20straat.png" alt="fibo straat" className="project-img" style={{ marginTop: 16, width: '100%', height: 'auto' }} onClick={() => setModalImg('/fibo%20straat.png')} />
+          <img src="/fibo-straat.png" alt="fibo straat" className="project-img" style={{ marginTop: 16, width: '100%', height: 'auto' }} onClick={() => setModalImg('/fibo-straat.png')} />
         </div>
 
         {/* Modal */}

@@ -67,9 +67,9 @@ export default function AcousticLaptopPage() {
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => setModalImg('/doosAl.png')}
+              onClick={() => setModalImg('/doosal.png')}
             >
-              <img src="/doosAl.png" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/doosal.png" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -85,8 +85,8 @@ export default function AcousticLaptopPage() {
           <div className="project-img-container" onClick={() => setModalImg('/spelen.png')}>
             <img src="/spelen.png" alt="spelen" className="project-img" />
           </div>
-          <div className="project-img-container" onClick={() => setModalImg('/Bts.png')}>
-            <img src="/Bts.png" alt="bts" className="project-img" />
+          <div className="project-img-container" onClick={() => setModalImg('/bts.png')}>
+            <img src="/bts.png" alt="bts" className="project-img" />
           </div>
         </div>
 

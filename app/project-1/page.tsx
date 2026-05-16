@@ -59,16 +59,16 @@ export default function Project1Page() {
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => setModalImg('/IMG_5001.PNG')}
+              onClick={() => setModalImg('/img_5001.png')}
             >
-              <img src="/IMG_5001.PNG" alt="Project 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/img_5001.png" alt="Project 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
 
         {/* Media Grid met 5 afbeeldingen */}
         <div style={{ width: '100%', padding: '0 16px 64px 16px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-          {['/IMG_5003.PNG','/IMG_5004.PNG','/IMG_5005.PNG','/IMG_5006.PNG','/IMG_5007.PNG'].map((src, idx) => (
+          {['/img_5003.png','/img_5004.png','/img_5005.png','/img_5006.png','/img_5007.png'].map((src, idx) => (
             <div 
               key={src}
               className="project-img-container" 

@@ -22,7 +22,7 @@ export default function Project2Page() {
           {/* Right: Image */}
           <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', minWidth: 0 }}>
             <img
-              src="/fibo%20logo.png"
+              src="/fibo-logo.png"
               alt="Fibonacci logo"
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', objectFit: 'cover', background: '#eee', marginLeft: 32 }}
             />
@@ -31,11 +31,11 @@ export default function Project2Page() {
         {/* Grid en brede afbeelding in één container voor perfecte uitlijning */}
         <div style={{ width: '100%', marginTop: 48 }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-            <img src="/fibo%20poster%202.png" alt="fibo poster 2" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20poster%202.png')} />
-            <img src="/fibo%20poster.png" alt="fibo poster" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20poster.png')} />
-            <img src="/fibo%20socials.png" alt="fibo socials" style={{ gridColumn: 'span 2', width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20socials.png')} />
+            <img src="/fibo-poster-2.png" alt="fibo poster 2" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo-poster-2.png')} />
+            <img src="/fibo-poster.png" alt="fibo poster" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo-poster.png')} />
+            <img src="/fibo-socials.png" alt="fibo socials" style={{ gridColumn: 'span 2', width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo-socials.png')} />
           </div>
-          <img src="/fibo%20straat.png" alt="fibo straat" style={{ display: 'block', width: '100%', maxWidth: '100%', height: 'auto', objectFit: 'contain', margin: '32px 0 0 0', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20straat.png')} />
+          <img src="/fibo-straat.png" alt="fibo straat" style={{ display: 'block', width: '100%', maxWidth: '100%', height: 'auto', objectFit: 'contain', margin: '32px 0 0 0', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo-straat.png')} />
           {/* Modal */}
           {modalImg && (
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setModalImg(null)}>

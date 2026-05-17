@@ -67,9 +67,9 @@ export default function AcousticLaptopPage() {
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => setModalImg('/doosal.png')}
+              onClick={() => setModalImg('/Laptop.jpg')}
             >
-              <img src="/doosal.png" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/Laptop.jpg" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -79,8 +79,8 @@ export default function AcousticLaptopPage() {
           <div className="project-img-container" onClick={() => setModalImg('/krabbels.jpg')}>
             <img src="/krabbels.jpg" alt="krabbels" style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'rotate(90deg) scaleY(-1)' }} />
           </div>
-          <div className="project-img-container" onClick={() => setModalImg('/partii.png')}>
-            <img src="/partii.png" alt="partii" className="project-img" />
+          <div className="project-img-container" onClick={() => setModalImg('/Parti%20doos.pdf')}>
+            <embed src="/Parti%20doos.pdf" type="application/pdf" width="100%" height="100%" />
           </div>
           <div className="project-img-container" onClick={() => setModalImg('/spelen.png')}>
             <img src="/spelen.png" alt="spelen" className="project-img" />
@@ -97,15 +97,16 @@ export default function AcousticLaptopPage() {
             background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', 
             alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out' 
           }} onClick={() => setModalImg(null)}>
-            <img
-              src={modalImg}
-              alt="Vergrote afbeelding"
-              style={{
+            {modalImg.endsWith('.pdf') ? (
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
+            ) : (
+              <img src={modalImg} alt="Vergrote afbeelding" style={{
                 maxWidth: '90vw',
                 maxHeight: '90vh',
                 transform: modalImg === '/krabbels.jpg' ? 'rotate(90deg) scaleY(-1)' : undefined
               }}
             />
+            )}
           </div>
         )}
       </div>

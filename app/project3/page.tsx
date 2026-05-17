@@ -23,9 +23,9 @@ export default function AcousticLaptopPage() {
           <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', minWidth: 0 }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#ccc', borderRadius: 8, marginLeft: 32, overflow: 'hidden', cursor: 'pointer' }}
-              onClick={() => setModalImg('/doosAl.png')}
+              onClick={() => setModalImg('/Laptop.jpg')}
             >
-              <img src="/doosAl.png" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/Laptop.jpg" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -34,8 +34,8 @@ export default function AcousticLaptopPage() {
           <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/krabbels.jpg')}>
             <img src="/krabbels.jpg" alt="krabbels" style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'rotate(90deg) scaleY(-1)' }} />
           </div>
-          <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/partii.png')}>
-            <img src="/partii.png" alt="partii" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/Parti%20doos.pdf')}>
+            <embed src="/Parti%20doos.pdf" type="application/pdf" width="100%" height="100%" />
           </div>
           <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/spelen.png')}>
             <img src="/spelen.png" alt="spelen" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -47,10 +47,10 @@ export default function AcousticLaptopPage() {
         {/* Modal */}
         {modalImg && (
           <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setModalImg(null)}>
-            <img
-              src={modalImg}
-              alt="Vergrote afbeelding"
-              style={{
+            {modalImg.endsWith('.pdf') ? (
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
+            ) : (
+              <img src={modalImg} alt="Vergrote afbeelding" style={{
                 maxWidth: '90vw',
                 maxHeight: '90vh',
                 borderRadius: 12,
@@ -58,6 +58,7 @@ export default function AcousticLaptopPage() {
                 transform: modalImg === '/krabbels.jpg' ? 'rotate(90deg) scaleY(-1)' : undefined
               }}
             />
+            )}
           </div>
         )}
       </div>

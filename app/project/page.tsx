@@ -24,7 +24,7 @@ export default function ProjectPage() {
           {/* Right: Image */}
           <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end', minWidth: 0 }}>
             <Image
-              src="/IMG_5001.PNG"
+              src="/leporello-1.png"
               alt="Nolan Building"
               width={400}
               height={400}

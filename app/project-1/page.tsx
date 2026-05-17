@@ -59,9 +59,9 @@ export default function Project1Page() {
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => setModalImg('/img_5001.png')}
+              onClick={() => setModalImg('/leporello-1.png')}
             >
-              <img src="/img_5001.png" alt="Project 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/leporello-1.png" alt="Project 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -86,7 +86,11 @@ export default function Project1Page() {
             background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', 
             alignItems: 'center', justifyContent: 'center', cursor: 'not-allowed' 
           }} onClick={() => setModalImg(null)}>
-            <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            {modalImg.endsWith('.pdf') ? (
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
+            ) : (
+              <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            )}
           </div>
         )}
       </div>

@@ -80,7 +80,7 @@ export default function Project2Page() {
         <div style={{ width: '100%', padding: '0 16px 64px 16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
             <img src="/fibo-poster-2.png" alt="fibo poster 2" className="project-img" onClick={() => setModalImg('/fibo-poster-2.png')} />
-            <img src="/fibo-poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/fibo-poster.png')} />
+            <img src="/poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/poster.png')} />
             <img src="/fibo-socials.png" alt="fibo socials" className="project-img" style={{ gridColumn: 'span 2' }} onClick={() => setModalImg('/fibo-socials.png')} />
           </div>
           
@@ -94,7 +94,11 @@ export default function Project2Page() {
             background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', 
             alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out' 
           }} onClick={() => setModalImg(null)}>
-            <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            {modalImg.endsWith('.pdf') ? (
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
+            ) : (
+              <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            )}
           </div>
         )}
       </div>

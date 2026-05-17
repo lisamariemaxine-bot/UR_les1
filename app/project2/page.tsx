@@ -39,7 +39,11 @@ export default function Project2Page() {
           {/* Modal */}
           {modalImg && (
             <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setModalImg(null)}>
+              {modalImg.endsWith('.pdf') ? (
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
+            ) : (
               <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh', borderRadius: 12, boxShadow: '0 4px 32px rgba(0,0,0,0.5)' }} />
+            )}
             </div>
           )}
         </div>

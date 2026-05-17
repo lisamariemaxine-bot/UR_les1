@@ -94,7 +94,11 @@ export default function Project2Page() {
             background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', 
             alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out' 
           }} onClick={() => setModalImg(null)}>
-            <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            {modalImg.endsWith('.pdf') ? (
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
+            ) : (
+              <img src={modalImg} alt="Vergrote afbeelding" style={{ maxWidth: '90vw', maxHeight: '90vh' }} />
+            )}
           </div>
         )}
       </div>

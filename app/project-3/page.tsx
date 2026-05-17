@@ -85,8 +85,8 @@ export default function AcousticLaptopPage() {
           <div className="project-img-container" onClick={() => setModalImg('/spelen.png')}>
             <img src="/spelen.png" alt="spelen" className="project-img" />
           </div>
-          <div className="project-img-container" onClick={() => setModalImg('/BOEM.png')}>
-            <img src="/BOEM.png" alt="bts" className="project-img" />
+          <div className="project-img-container" onClick={() => setModalImg('/bts.png')}>
+            <img src="/bts.png" alt="bts" className="project-img" />
           </div>
         </div>
 

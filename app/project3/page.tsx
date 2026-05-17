@@ -40,15 +40,15 @@ export default function AcousticLaptopPage() {
           <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/spelen.png')}>
             <img src="/spelen.png" alt="spelen" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/BOEM.png')}>
-            <img src="/BOEM.png" alt="bts" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ width: '100%', aspectRatio: '1/1', background: '#ccc', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setModalImg('/Bts.png')}>
+            <img src="/Bts.png" alt="bts" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         </div>
         {/* Modal */}
         {modalImg && (
           <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setModalImg(null)}>
             {modalImg.endsWith('.pdf') ? (
-              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none', borderRadius: 12 }} />
+              <iframe src={modalImg} style={{ width: '90vw', height: '90vh', border: 'none' }} />
             ) : (
               <img src={modalImg} alt="Vergrote afbeelding" style={{
                 maxWidth: '90vw',

@@ -76,8 +76,8 @@ export default function AcousticLaptopPage() {
 
         {/* Grid van 4 kolommen */}
         <div style={{ width: '100%', padding: '0 16px 64px 16px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-          <div className="project-img-container" onClick={() => setModalImg('/krabbels.jpg')}>
-            <img src="/krabbels.jpg" alt="krabbels" style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'rotate(90deg) scaleY(-1)' }} />
+          <div className="project-img-container" onClick={() => setModalImg('/krabbels.png')}>
+            <img src="/krabbels.png" alt="krabbels" style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'rotate(90deg) scaleY(-1)' }} />
           </div>
           <div className="project-img-container" onClick={() => setModalImg('/partii.png')}>
             <img src="/partii.png" alt="partii" className="project-img" />
@@ -103,7 +103,7 @@ export default function AcousticLaptopPage() {
               style={{
                 maxWidth: '90vw',
                 maxHeight: '90vh',
-                transform: modalImg === '/krabbels.jpg' ? 'rotate(90deg) scaleY(-1)' : undefined
+                transform: modalImg === '/krabbels.png' ? 'rotate(90deg) scaleY(-1)' : undefined
               }}
             />
           </div>

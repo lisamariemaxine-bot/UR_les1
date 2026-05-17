@@ -72,7 +72,11 @@ export default function HomePage() {
   const handleBookClick = (boek: any) => {
     handleBookHover(boek);
     setTimeout(() => {
-      if (boek.href) router.push(boek.href);
+      if (boek.title === "HOME") {
+        window.location.reload();
+      } else if (boek.href) {
+        router.push(boek.href);
+      }
     }, 300);
   };
 

@@ -59,9 +59,9 @@ export default function Project1Page() {
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => setModalImg('/img_5001.png')}
+              onClick={() => setModalImg('/leporello-1.png')}
             >
-              <img src="/img_5001.png" alt="Project 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/leporello-1.png" alt="Project 1" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ export default function Project2Page() {
         <div style={{ width: '100%', marginTop: 48 }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
             <img src="/fibo%20poster%202.png" alt="fibo poster 2" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20poster%202.png')} />
-            <img src="/fibo%20poster.png" alt="fibo poster" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20poster.png')} />
+            <img src="/poster.png" alt="fibo poster" style={{ width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/poster.png')} />
             <img src="/fibo%20socials.png" alt="fibo socials" style={{ gridColumn: 'span 2', width: '100%', height: 360, objectFit: 'contain', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20socials.png')} />
           </div>
           <img src="/fibo%20straat.png" alt="fibo straat" style={{ display: 'block', width: '100%', maxWidth: '100%', height: 'auto', objectFit: 'contain', margin: '32px 0 0 0', background: '#fff', cursor: 'pointer' }} onClick={() => setModalImg('/fibo%20straat.png')} />

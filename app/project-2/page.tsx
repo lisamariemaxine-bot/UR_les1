@@ -80,7 +80,7 @@ export default function Project2Page() {
         <div style={{ width: '100%', padding: '0 16px 64px 16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
             <img src="/fibo-poster-2.png" alt="fibo poster 2" className="project-img" onClick={() => setModalImg('/fibo-poster-2.png')} />
-            <img src="/fibo-poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/fibo-poster.png')} />
+            <img src="/poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/poster.png')} />
             <img src="/fibo-socials.png" alt="fibo socials" className="project-img" style={{ gridColumn: 'span 2' }} onClick={() => setModalImg('/fibo-socials.png')} />
           </div>
           

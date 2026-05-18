@@ -13,7 +13,6 @@ type ProfileData = {
   email: string;
   phone: string;
   location: string;
-  avatar: string;
 };
 
 type SettingsData = {
@@ -134,7 +133,6 @@ export default function AdminUserPage() {
     email: "lisa@studio-avermaet.com",
     phone: "",
     location: "ANTWERP",
-    avatar: "",
   });
 
   const [settings, setSettings] = useState<SettingsData>({
@@ -149,16 +147,7 @@ export default function AdminUserPage() {
     setTimeout(() => setSavedSection(null), 2000);
   }
 
-  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file || !file.type.startsWith("image/")) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string")
-        setProfile((p) => ({ ...p, avatar: reader.result as string }));
-    };
-    reader.readAsDataURL(file);
-  }
+  // avatar/profile photo removed per request
 
   const navItems = [
     { key: "profile" as Section, label: "Profile" },
@@ -201,33 +190,7 @@ export default function AdminUserPage() {
               <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profile</h1>
               <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">User_Identity_Node</p>
 
-              <div className="flex flex-col md:flex-row items-start gap-6 md:gap-10 mb-12">
-                <div className="shrink-0">
-                  {profile.avatar ? (
-                    <img src={profile.avatar} alt="Avatar" className="w-20 h-20 md:w-24 md:h-24 object-cover grayscale border border-black/10" />
-                  ) : (
-                    <div className="w-20 h-20 md:w-24 md:h-24 bg-black/5 border border-black/10 flex items-center justify-center text-black/20 text-[10px] font-black uppercase">No_Img</div>
-                  )}
-                </div>
-                <div className="flex flex-col gap-3 w-full">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Profile photo</p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarChange}
-                    className="block text-[9px] md:text-[10px] font-black uppercase text-black file:mr-4 file:border-0 file:bg-black file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:opacity-80 w-full"
-                  />
-                  {profile.avatar && (
-                    <button
-                      type="button"
-                      onClick={() => setProfile((p) => ({ ...p, avatar: "" }))}
-                      className="text-[10px] uppercase tracking-[0.14em] text-black/40 hover:text-black transition-colors text-left font-black"
-                    >
-                      Remove photo
-                    </button>
-                  )}
-                </div>
-              </div>
+              {/* Profile photo option removed */}
 
               <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 mb-8">
                 <Field label="First name" name="firstName" value={profile.firstName} onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))} />

@@ -93,7 +93,7 @@ export default function HomePage() {
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 h-[100dvh] w-full font-sans uppercase overflow-hidden select-none md:cursor-none" 
+      className="fixed inset-0 h-[100dvh] w-full font-sans uppercase overflow-hidden select-none md:cursor-auto" 
       style={{ backgroundColor: offWhite, ['--m-x' as any]: '0px', ['--m-y' as any]: '0px' }}
     >
       <div className="flex flex-col md:flex-row h-full w-full relative">

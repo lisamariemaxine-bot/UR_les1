@@ -24,7 +24,8 @@ export default function Project2Page() {
       alignItems: 'center', 
       paddingTop: '10vh',
       fontFamily: 'sans-serif',
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      cursor: "url('data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><polygon points='2,2 26,16 18,18 20,30 12,20' fill='%23C3F380'/></svg>') 16 16, crosshair"
     }}>
       <FontLink />
       
@@ -49,7 +50,7 @@ export default function Project2Page() {
               </h1>
             </div>
 
-            <div style={{ display: 'flex', gap: 24, marginTop: 40 }}>
+              <div style={{ display: 'flex', gap: 24, marginTop: 40 }}>
               <div style={{ minWidth: 100, fontSize: 12, fontWeight: 900, opacity: 0.5 }}>
                 [ OVER DIT PROJECT ]
               </div>
@@ -61,7 +62,7 @@ export default function Project2Page() {
                 letterSpacing: '-0.02em',
                 textTransform: 'none' 
               }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisi nec erat. Mauris non erat vitae urna facilisis dictum.
+                Voor dit project ontwikkelde ik een merkconcept voor een nieuwe iced coffee in blik. Het merk heet Fibonacci en richt zich op ingenieurs en hoogopgeleide mensen die houden van structuur en precisie. Het logo toont een geit met een Fibonacci-spiraal in de hoorn, gebaseerd op de legende dat een geit als eerste de koffieboon ontdekte. De baseline: "Wisdom in every drop." Ik werkte het volledige merk uit: logo, kleuren, typografie, blikdesign en posters.
               </div>
             </div>
           </div>
@@ -69,7 +70,7 @@ export default function Project2Page() {
           {/* Rechts: Logo */}
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <img
-              src="/fibo-logo.png"
+              src="/_backup_images_2026-05-17/fibo-logo.png"
               alt="Fibonacci logo"
               style={{ width: '100%', maxWidth: 350, aspectRatio: '1/1', objectFit: 'cover' }}
             />
@@ -79,12 +80,12 @@ export default function Project2Page() {
         {/* Media Grid */}
         <div style={{ width: '100%', padding: '0 16px 64px 16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-            <img src="/fibo-poster-2.png" alt="fibo poster 2" className="project-img" onClick={() => setModalImg('/fibo-poster-2.png')} />
-            <img src="/fibo-poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/fibo-poster.png')} />
-            <img src="/fibo-socials.png" alt="fibo socials" className="project-img" style={{ gridColumn: 'span 2' }} onClick={() => setModalImg('/fibo-socials.png')} />
+            <img src="/_backup_images_2026-05-17/fibo-poster-2.png" alt="fibo poster 2" className="project-img" onClick={() => setModalImg('/_backup_images_2026-05-17/fibo-poster-2.png')} />
+            <img src="/_backup_images_2026-05-17/fibo-poster.png" alt="fibo poster" className="project-img" onClick={() => setModalImg('/_backup_images_2026-05-17/fibo-poster.png')} />
+            <img src="/_backup_images_2026-05-17/fibo-socials.png" alt="fibo socials" className="project-img" style={{ gridColumn: 'span 2' }} onClick={() => setModalImg('/_backup_images_2026-05-17/fibo-socials.png')} />
           </div>
           
-          <img src="/fibo-straat.png" alt="fibo straat" className="project-img" style={{ marginTop: 16, width: '100%', height: 'auto' }} onClick={() => setModalImg('/fibo-straat.png')} />
+          <img src="/_backup_images_2026-05-17/fibo-straat.png" alt="fibo straat" className="project-img" style={{ marginTop: 16, width: '100%', height: 'auto' }} onClick={() => setModalImg('/_backup_images_2026-05-17/fibo-straat.png')} />
         </div>
 
         {/* Modal */}

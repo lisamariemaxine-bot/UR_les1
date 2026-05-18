@@ -27,15 +27,7 @@ export default function AboutPage() {
             <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-[0.8] md:leading-[0.85]">
               ABOUT<br />ME
             </h1>
-            <span 
-              className="absolute bottom-[-2px] right-0 md:-bottom-2 md:right-[-40px] text-3xl sm:text-5xl md:text-7xl italic normal-case z-10 whitespace-nowrap"
-              style={{ 
-                fontFamily: '"Pinyon Script", cursive', 
-                color: accentColor,
-              }}
-            >
-              Lisa Marie
-            </span>
+            {/* Name in script font removed per request */}
           </div>
         </header>
 
@@ -71,7 +63,7 @@ export default function AboutPage() {
               <h3 className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] opacity-60 mb-4 md:mb-6 uppercase">Expertise Systems</h3>
               <ul className="space-y-3 md:space-y-4 font-black text-sm sm:text-base md:text-xl tracking-tighter">
                 <li className="flex justify-between border-b border-black/20 pb-2">
-                  <span>Color Theory</span>
+                  <span>AI Creative</span>
                   <span className="italic">●</span>
                 </li>
                 <li className="flex justify-between border-b border-black/20 pb-2">

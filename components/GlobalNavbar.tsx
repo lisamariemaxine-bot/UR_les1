@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import SidebarSlider from "@/components/SidebarSlider"
 import { Settings, Edit } from "lucide-react"
 
@@ -9,6 +9,8 @@ export default function GlobalNavbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [menuBgColor, setMenuBgColor] = useState("#FAFAFA")
   const router = useRouter()
+  const pathname = usePathname()
+  const isHome = pathname === '/' || pathname === '/home'
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -35,7 +37,7 @@ export default function GlobalNavbar() {
     { label: "Settings", href: "/settings", code: "AD", color: "#B0B0B0" },
   ];
 
-  const crossColor = "#000000";
+  const crossColor = isSidebarOpen ? "#000000" : (isHome ? "#FFFFFF" : "#000000");
 
   const handleMenuLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string, color: string) => {
     event.preventDefault()
@@ -44,6 +46,21 @@ export default function GlobalNavbar() {
 
     window.setTimeout(() => {
       setIsSidebarOpen(false)
+      // show a full-screen overlay with the link color to hide the old page during navigation
+      try {
+        const existing = document.getElementById('nav-overlay')
+        if (existing) existing.remove()
+        const overlay = document.createElement('div')
+        overlay.id = 'nav-overlay'
+        overlay.style.position = 'fixed'
+        overlay.style.inset = '0'
+        overlay.style.background = color
+        overlay.style.zIndex = '9998'
+        overlay.style.transition = 'opacity 0.2s ease'
+        document.body.appendChild(overlay)
+      } catch (e) {
+        // ignore server-side or DOM errors
+      }
       router.push(href)
     }, 260)
   }
@@ -62,19 +79,24 @@ export default function GlobalNavbar() {
         className="fixed top-6 left-6 z-[110] flex items-center group focus:outline-none"
         onClick={handleToggleMenu}
         aria-label="Toggle Menu"
+        style={{
+          backgroundColor: isHome && !isSidebarOpen ? '#000000' : 'transparent',
+          padding: isHome && !isSidebarOpen ? '8px' : undefined,
+          borderRadius: isHome && !isSidebarOpen ? '0px' : undefined,
+        }}
       >
-        <div className="relative w-8 h-6 md:w-14 md:h-12 overflow-hidden">
+        <div className="relative w-7 h-5 md:w-12 md:h-10 overflow-hidden">
           <div className="flex flex-col justify-between h-full">
             <span
-              className={`bg-black block w-full h-[3px] md:h-[5px] transition-all duration-200 ${isSidebarOpen ? 'absolute left-0 right-0 top-1/2 -translate-y-1/2 rotate-45' : ''}`}
+              className={`block w-full h-[3px] md:h-[5px] transition-all duration-200 ${isSidebarOpen ? 'absolute left-0 right-0 top-1/2 -translate-y-1/2 rotate-45' : ''}`}
               style={{ backgroundColor: crossColor }}
             />
             <span
-              className={`bg-black block w-full h-[3px] md:h-[5px] transition-opacity duration-150 ${isSidebarOpen ? 'opacity-0' : 'opacity-100'}`}
+              className={`block w-full h-[3px] md:h-[5px] transition-opacity duration-150 ${isSidebarOpen ? 'opacity-0' : 'opacity-100'}`}
               style={{ backgroundColor: crossColor }}
             />
             <span
-              className={`bg-black block w-full h-[3px] md:h-[5px] transition-all duration-200 ${isSidebarOpen ? 'absolute left-0 right-0 top-1/2 -translate-y-1/2 -rotate-45' : ''}`}
+              className={`block w-full h-[3px] md:h-[5px] transition-all duration-200 ${isSidebarOpen ? 'absolute left-0 right-0 top-1/2 -translate-y-1/2 -rotate-45' : ''}`}
               style={{ backgroundColor: crossColor }}
             />
           </div>
@@ -121,7 +143,9 @@ export default function GlobalNavbar() {
                     {link.label}
                   </span>
                 </div>
-                <div className="hidden md:block opacity-0 group-hover:opacity-30 transition-opacity font-mono font-black text-[9px] tracking-widest text-black uppercase">
+                <div
+                  className="hidden md:block opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-3 group-hover:scale-105 font-mono font-black text-[9px] tracking-widest uppercase text-black"
+                >
                   {link.label === 'Project 1' ? 'leporello' :
                    link.label === 'Project 2' ? 'FIBONACCI' :
                    link.label === 'Project 3' ? 'Acoustic Laptop' :

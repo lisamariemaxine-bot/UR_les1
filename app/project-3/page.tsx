@@ -21,7 +21,8 @@ export default function AcousticLaptopPage() {
       alignItems: 'center', 
       paddingTop: '10vh',
       fontFamily: 'sans-serif',
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      cursor: "url('data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><polygon points='2,2 26,16 18,18 20,30 12,20' fill='%23FAE170'/></svg>') 16 16, crosshair"
     }}>
       <FontLink />
       
@@ -58,7 +59,8 @@ export default function AcousticLaptopPage() {
                 letterSpacing: '-0.02em',
                 textTransform: 'none' 
               }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisi nec erat. Mauris non erat vitae urna facilisis dictum.
+                Voor dit project bouwde ik een acoustic laptop: een zelfgemaakte houten doos gevuld met voorwerpen zoals een kam, buizen, belletjes en een vork. Door erop te tikken, te wrijven of erin te roeren ontstaan verschillende klanken.
+                Daarnaast ontwierp ik een visuele score: een grafische partituur die aangeeft hoe iemand het instrument moet bespelen. Ik testte dit met verschillende personen en paste de score steeds aan op basis van hun feedback. Het eindresultaat is een duidelijk pad met symbolen voor luid, zacht en herhaling.
               </div>
             </div>
           </div>
@@ -67,26 +69,26 @@ export default function AcousticLaptopPage() {
           <div style={{ flex: 0.8, display: 'flex', justifyContent: 'flex-end' }}>
             <div
               style={{ width: '100%', maxWidth: 400, aspectRatio: '1/1', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => setModalImg('/doosal.png')}
+              onClick={() => setModalImg('/_backup_images_2026-05-17/doosal.png')}
             >
-              <img src="/doosal.png" alt="doosAl" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/_backup_images_2026-05-17/doosal.png" alt="doosal" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
 
         {/* Grid van 4 kolommen */}
         <div style={{ width: '100%', padding: '0 16px 64px 16px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-          <div className="project-img-container" onClick={() => setModalImg('/krabbels.png')}>
-            <img src="/krabbels.png" alt="krabbels" style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'rotate(90deg) scaleY(-1)' }} />
+          <div className="project-img-container" onClick={() => setModalImg('/_backup_images_2026-05-17/krabbels.png')}>
+            <img src="/_backup_images_2026-05-17/krabbels.png" alt="krabbels" style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'rotate(90deg) scaleY(-1)' }} />
           </div>
-          <div className="project-img-container" onClick={() => setModalImg('/partii.png')}>
-            <img src="/partii.png" alt="partii" className="project-img" />
+          <div className="project-img-container" onClick={() => setModalImg('/_backup_images_2026-05-17/partii.png')}>
+            <img src="/_backup_images_2026-05-17/partii.png" alt="partii" className="project-img" />
           </div>
-          <div className="project-img-container" onClick={() => setModalImg('/spelen.png')}>
-            <img src="/spelen.png" alt="spelen" className="project-img" />
+          <div className="project-img-container" onClick={() => setModalImg('/_backup_images_2026-05-17/spelen.png')}>
+            <img src="/_backup_images_2026-05-17/spelen.png" alt="spelen" className="project-img" />
           </div>
-          <div className="project-img-container" onClick={() => setModalImg('/bts.png')}>
-            <img src="/bts.png" alt="bts" className="project-img" />
+          <div className="project-img-container" onClick={() => setModalImg('/_backup_images_2026-05-17/bts.png')}>
+            <img src="/_backup_images_2026-05-17/bts.png" alt="bts" className="project-img" />
           </div>
         </div>
 
@@ -103,7 +105,7 @@ export default function AcousticLaptopPage() {
               style={{
                 maxWidth: '90vw',
                 maxHeight: '90vh',
-                transform: modalImg === '/krabbels.png' ? 'rotate(90deg) scaleY(-1)' : undefined
+                transform: modalImg === '/_backup_images_2026-05-17/krabbels.png' ? 'rotate(90deg) scaleY(-1)' : undefined
               }}
             />
           </div>

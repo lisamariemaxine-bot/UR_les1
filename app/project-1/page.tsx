@@ -14,7 +14,8 @@ export default function Project1Page() {
       alignItems: 'center', 
       paddingTop: '10vh',
       fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      cursor: "url('data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><polygon points='2,2 26,16 18,18 20,30 12,20' fill='%230b3d02'/></svg>') 16 16, crosshair"
     }}>
       
       <div style={{ width: '90vw', maxWidth: 1100, display: 'flex', flexDirection: 'column' }}>
@@ -50,7 +51,7 @@ export default function Project1Page() {
                 letterSpacing: '-0.02em',
                 textTransform: 'none' 
               }}>
-                Hier komt de beschrijving van Project 1. Zorg dat deze tekst qua lengte overeenkomt met de andere pagina's voor een rustig en consistent beeld in je portfolio.
+                Voor dit project maakte ik een leporello gebaseerd op het werk van Henri Cartier-Bresson. Hij stond bekend om zijn straatfotografie en het vastleggen van het "beslissende moment". Ik probeerde die stijl te vertalen naar mijn eigen beelden: eerlijk, raak en zonder te poseren.
               </div>
             </div>
           </div>
@@ -66,15 +67,25 @@ export default function Project1Page() {
           </div>
         </div>
 
-        {/* Media Grid met 5 afbeeldingen */}
+        {/* Top brede afbeelding (neemt dezelfde breedte als de 3 kolommen hieronder) */}
+        <div style={{ width: '100%', padding: '0 16px 16px 16px' }}>
+          <div
+            style={{ width: '100%', background: '#f0f0f0', cursor: 'pointer', overflow: 'hidden' }}
+            onClick={() => setModalImg('/_backup_images_2026-05-17/leporello-1.png')}
+          >
+            <img src="/_backup_images_2026-05-17/leporello-1.png" alt="Leporello highlight" style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
+          </div>
+        </div>
+
+        {/* Media Grid met 6 afbeeldingen */}
         <div style={{ width: '100%', padding: '0 16px 64px 16px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-          {['/img_5003.png','/img_5004.png','/img_5005.png','/img_5006.png','/img_5007.png'].map((src, idx) => (
+          {['/_backup_images_2026-05-17/img_5001.png','/_backup_images_2026-05-17/img_5003.png','/_backup_images_2026-05-17/img_5004.png','/_backup_images_2026-05-17/img_5005.png','/_backup_images_2026-05-17/img_5006.png','/_backup_images_2026-05-17/img_5007.png'].map((src, idx) => (
             <div 
               key={src}
               className="project-img-container" 
               onClick={() => setModalImg(src)}
             >
-              <img src={src} alt={`Project 1 afbeelding ${idx+2}`} className="project-img" />
+              <img src={src} alt={`Project 1 afbeelding ${idx+1}`} className="project-img" />
             </div>
           ))}
         </div>

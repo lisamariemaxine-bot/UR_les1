@@ -21,11 +21,12 @@ export default function HomePage() {
   const letterColors = ["#FF97D0", "#125603", "#C3F380", "#D13F13", "#FDC5C6"];
 
   const boeken = [
-    { title: "HOME", href: "/home", code: "H.00", system: "MAIN INTERFACE", bgColor: "#FF97D0", textColor: "#125603" },
+    { title: "START", href: "/home", code: "H.00", system: "HOOFDINTERFACE", bgColor: "#FF97D0", textColor: "#125603" },
     { title: "PROJECT 1", href: "/project-1", code: "P.01", system: "LEPORELLO", bgColor: "#125603", textColor: "#C3F380" },
     { title: "PROJECT 2", href: "/project-2", code: "P.02", system: "FIBONACCI", bgColor: "#C3F380", textColor: "#7523B4" },
-    { title: "PROJECT 3", href: "/project-3", code: "P.03", system: "ACOUSTIC LAPTOP", bgColor: "#FAE170", textColor: "#D13F13" },
-    { title: "ABOUT ME", href: "/about", code: "AB.04", system: "ABOUT THE MAKER", bgColor: "#FDC5C6", textColor: "#D13F13" },
+    { title: "PROJECT 3", href: "/project-3", code: "P.03", system: "AKOESTISCHE LAPTOP", bgColor: "#FAE170", textColor: "#D13F13" },
+    { title: "PROJECT 4", href: "/project-4", code: "P.04", system: "BELGISCHE POOLEXPEDITIES", bgColor: "#8B5CF6", textColor: "#FFFFFF" },
+    { title: "OVER MIJ", href: "/about", code: "AB.04", system: "OVER DE MAKER", bgColor: "#FDC5C6", textColor: "#D13F13" },
   ];
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function HomePage() {
     if (resetTimeout.current) clearTimeout(resetTimeout.current);
     setActiveBookTitle(boek.title);
     
-    if (boek.title === "HOME") {
+    if (boek.href === "/home") {
       setActiveTextColor(boek.textColor);
     } else {
       setActiveTextColor(boek.bgColor);
@@ -72,7 +73,7 @@ export default function HomePage() {
   const handleBookClick = (boek: any) => {
     handleBookHover(boek);
     setTimeout(() => {
-      if (boek.title === "HOME") {
+      if (boek.href === "/home") {
         window.location.reload();
       } else if (boek.href) {
         router.push(boek.href);
@@ -152,9 +153,10 @@ export default function HomePage() {
           <div className="relative flex items-end h-[60dvh] md:h-[85vh] lg:h-[90vh] min-w-max md:min-w-0 md:w-auto max-w-full justify-end pb-8 md:pb-0 md:pr-8">
             <div className="flex items-end gap-1.5 md:gap-2 px-6 md:px-0">
               {boeken.map((boek, i) => {
-                const isHome = boek.title === "HOME";
-                const isAbout = boek.title === "ABOUT ME";
+                const isHome = boek.href === "/home";
+                const isAbout = boek.href === "/about";
                 const isProject = boek.title.startsWith("PROJECT");
+                const isProject4 = boek.href === "/project-4";
                 const isSelected = activeBookTitle === boek.title;
                 
                 let widthClasses = "w-12 md:w-16 lg:w-20 xl:w-24"; 
@@ -197,7 +199,7 @@ export default function HomePage() {
                           </span>
                         </div>
                         <div className="flex flex-col py-2">
-                          <h3 className={`font-black leading-[0.8] tracking-tighter ${isHome ? 'text-3xl lg:text-5xl xl:text-6xl' : 'text-3xl lg:text-5xl xl:text-7xl'}`}>
+                          <h3 className={`font-black leading-[0.8] tracking-tighter ${isHome ? 'text-4xl lg:text-6xl xl:text-7xl' : isProject4 ? 'text-[1.65rem] lg:text-[2.85rem] xl:text-[3.55rem]' : 'text-3xl lg:text-5xl xl:text-6xl'}`}>
                             {isProject ? boek.system : boek.title}
                           </h3>
                         </div>

@@ -106,11 +106,11 @@ function SaveBar({ onSave, saved }: { onSave: () => void; saved: boolean }) {
         style={SANS_FONT}
         className="bg-black px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:opacity-80 active:scale-95"
       >
-        Save changes
+        Wijzigingen opslaan
       </button>
       {saved && (
         <span style={SANS_FONT} className="text-[10px] text-black/40 uppercase tracking-[0.2em] font-bold italic">
-          Saved.
+          Opgeslagen.
         </span>
       )}
     </div>
@@ -129,14 +129,14 @@ export default function AdminUserPage() {
     firstName: "LISA",
     lastName: "MARIE",
     username: "avermaet_admin",
-    bio: "Visualizing complex systems.",
+    bio: "Complexe systemen visualiseren.",
     email: "lisa@studio-avermaet.com",
     phone: "",
     location: "ANTWERP",
   });
 
   const [settings, setSettings] = useState<SettingsData>({
-    language: "English",
+    language: "Nederlands",
     timezone: "Europe/Brussels",
     emailNotifications: true,
     publicProfile: true,
@@ -150,8 +150,8 @@ export default function AdminUserPage() {
   // avatar/profile photo removed per request
 
   const navItems = [
-    { key: "profile" as Section, label: "Profile" },
-    { key: "settings" as Section, label: "Settings" },
+    { key: "profile" as Section, label: "Profiel" },
+    { key: "settings" as Section, label: "Instellingen" },
   ];
 
   return (
@@ -162,7 +162,7 @@ export default function AdminUserPage() {
         {/* ── Sidebar / Top Nav ── */}
         <aside className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-black/10 bg-transparent px-3 md:px-0 py-4 md:py-10">
           <p className="hidden md:block px-8 mb-8 text-[10px] uppercase tracking-[0.3em] font-black text-black/20">
-            Navigation
+            Navigatie
           </p>
           <nav className="flex flex-row md:flex-col overflow-x-auto no-scrollbar">
             {navItems.map(({ key, label }) => (
@@ -187,22 +187,22 @@ export default function AdminUserPage() {
           {/* ── PROFILE ── */}
           {activeSection === "profile" && (
             <section className="animate-in fade-in duration-500">
-              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profile</h1>
-              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">User_Identity_Node</p>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Profiel</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">Gebruikersidentiteit_Node</p>
 
               {/* Profile photo option removed */}
 
               <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 mb-8">
-                <Field label="First name" name="firstName" value={profile.firstName} onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))} />
-                <Field label="Last name" name="lastName" value={profile.lastName} onChange={(e) => setProfile((p) => ({ ...p, lastName: e.target.value }))} />
-                <Field label="Username" name="username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
+                <Field label="Voornaam" name="firstName" value={profile.firstName} onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))} />
+                <Field label="Achternaam" name="lastName" value={profile.lastName} onChange={(e) => setProfile((p) => ({ ...p, lastName: e.target.value }))} />
+                <Field label="Gebruikersnaam" name="username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
                 <Field label="Email" name="email" value={profile.email} onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))} type="email" />
-                <Field label="Phone" name="phone" value={profile.phone} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
-                <Field label="Location" name="location" value={profile.location} onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))} />
+                <Field label="Telefoon" name="phone" value={profile.phone} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
+                <Field label="Locatie" name="location" value={profile.location} onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))} />
               </div>
 
               <div className="mb-12">
-                <TextAreaField label="Biography" name="bio" value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
+                <TextAreaField label="Biografie" name="bio" value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
               </div>
 
               <SaveBar onSave={markSaved} saved={savedSection === "profile"} />
@@ -212,18 +212,18 @@ export default function AdminUserPage() {
           {/* ── SETTINGS ── */}
           {activeSection === "settings" && (
             <section className="animate-in fade-in duration-500">
-              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Settings</h1>
-              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">System_Configuration</p>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-2 text-black">Instellingen</h1>
+              <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest mb-10 md:mb-12">Systeemconfiguratie</p>
 
               <div className="flex flex-col gap-10 mb-12">
                 <div className="relative">
-                  <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Language</label>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Taal</label>
                   <select
                     value={settings.language}
                     onChange={(e) => setSettings((s) => ({ ...s, language: e.target.value }))}
                     className="w-full border-b-2 border-black/10 bg-transparent py-2 text-sm font-bold uppercase text-black focus:border-black focus:outline-none appearance-none cursor-pointer"
                   >
-                    <option className="bg-[#C3F380]">English</option>
+                    <option className="bg-[#C3F380]">Nederlands</option>
                     <option className="bg-[#C3F380]">Nederlands</option>
                     <option className="bg-[#C3F380]">Français</option>
                     <option className="bg-[#C3F380]">Deutsch</option>
@@ -231,7 +231,7 @@ export default function AdminUserPage() {
                 </div>
 
                 <div className="flex flex-col gap-6">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Preferences</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Voorkeuren</p>
                   <label className="flex items-center gap-4 cursor-pointer group">
                     <input
                       type="checkbox"
@@ -239,7 +239,7 @@ export default function AdminUserPage() {
                       onChange={(e) => setSettings((s) => ({ ...s, emailNotifications: e.target.checked }))}
                       className="w-4 h-4 accent-black"
                     />
-                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Email notifications</span>
+                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">E-mailmeldingen</span>
                   </label>
                   <label className="flex items-center gap-4 cursor-pointer group">
                     <input
@@ -248,15 +248,15 @@ export default function AdminUserPage() {
                       onChange={(e) => setSettings((s) => ({ ...s, publicProfile: e.target.checked }))}
                       className="w-4 h-4 accent-black"
                     />
-                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Public profile</span>
+                    <span className="text-xs font-bold uppercase tracking-widest group-hover:text-black text-black/60 transition-colors">Openbaar profiel</span>
                   </label>
                 </div>
 
                 <div className="border-t border-black/10 pt-10">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-8">Security</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mb-8">Beveiliging</p>
                   <div className="grid gap-10 grid-cols-1 sm:grid-cols-2">
-                    <Field label="New password" name="newPassword" value="" onChange={() => {}} type="password" />
-                    <Field label="Confirm password" name="confirmPassword" value="" onChange={() => {}} type="password" />
+                    <Field label="Nieuw wachtwoord" name="newPassword" value="" onChange={() => {}} type="password" />
+                    <Field label="Bevestig wachtwoord" name="confirmPassword" value="" onChange={() => {}} type="password" />
                   </div>
                 </div>
               </div>

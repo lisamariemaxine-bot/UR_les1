@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import SidebarSlider from "@/components/SidebarSlider"
-import { Settings, Edit } from "lucide-react"
 
 export default function GlobalNavbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -27,14 +26,13 @@ export default function GlobalNavbar() {
   }, []);
 
   const menuLinks = [
-    { label: "Home", href: "/home", code: "00", color: "#FF97D0" },
+    { label: "Start", href: "/home", code: "00", color: "#FF97D0" },
     { label: "Project 1", href: "/project-1", code: "P1", color: "#125603" },
     { label: "Project 2", href: "/project-2", code: "P2", color: "#C3F380" },
     { label: "Project 3", href: "/project-3", code: "P3", color: "#FAE170" },
-    { label: "About Me", href: "/about", code: "01", color: "#FDC5C6" },
+    { label: "Project 4", href: "/project-4", code: "P4", color: "#8B5CF6" },
+    { label: "Over Mij", href: "/about", code: "01", color: "#FDC5C6" },
     { label: "Contact", href: "/contact", code: "02", color: "#C3F380" },
-    { label: "Admin", href: "/admin", code: "ST", color: "#A0C4FF" },
-    { label: "Settings", href: "/settings", code: "AD", color: "#B0B0B0" },
   ];
 
   const crossColor = isSidebarOpen ? "#000000" : (isHome ? "#FFFFFF" : "#000000");
@@ -128,17 +126,6 @@ export default function GlobalNavbar() {
                 className="group flex items-center justify-between py-0.5 md:py-1 border-b border-black/10 transition-all duration-300"
               >
                 <div className="flex items-center text-black">
-                  {/* conditional icon for Admin and Settings */}
-                  {link.label === 'Admin' && (
-                    <span className="mr-3">
-                      <Edit size={24} />
-                    </span>
-                  )}
-                  {link.label === 'Settings' && (
-                    <span className="mr-3">
-                      <Settings size={24} />
-                    </span>
-                  )}
                   <span className="text-3xl md:text-6xl lg:text-7xl font-serif italic tracking-tighter leading-none transition-all group-hover:pl-4">
                     {link.label}
                   </span>

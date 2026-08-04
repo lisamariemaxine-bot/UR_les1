@@ -15,7 +15,7 @@ const SANS_FONT = {
 
 export default function AdminProjectPage() {
   const [form, setForm] = useState<ProjectForm>({
-    title: "Project Titel",
+    title: "Projecttitel",
     description: "Beschrijf hier je project...",
     mainImage: "",
     gridImages: ["", "", "", "", ""],
@@ -74,7 +74,7 @@ export default function AdminProjectPage() {
                 <div className="relative mb-8 md:mb-[60px]">
                   <h1 className="m-0 leading-[0.85] font-black tracking-tighter break-words"
                       style={{ fontSize: 'clamp(2.5rem, 12vw, 5.5rem)' }}>
-                    {form.title || "Project Titel"}
+                    {form.title || "Projecttitel"}
                   </h1>
                 </div>
 
@@ -91,7 +91,7 @@ export default function AdminProjectPage() {
 
               <div className="flex-[0.8] flex justify-center md:justify-end">
                 <div className="w-full max-w-[400px] aspect-square bg-[#f0f0f0] overflow-hidden border border-[#eee]">
-                  {form.mainImage && <img src={form.mainImage} alt="Main" className="w-full h-full object-cover" />}
+                  {form.mainImage && <img src={form.mainImage} alt="Hoofdafbeelding" className="w-full h-full object-cover" />}
                 </div>
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function AdminProjectPage() {
             <div className="w-full px-0 md:px-4 pb-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {form.gridImages.map((src, idx) => (
                 <div key={idx} className="w-full aspect-square bg-[#f0f0f0] overflow-hidden border border-[#eee]">
-                  {src && <img src={src} alt={`Grid ${idx}`} className="w-full h-full object-cover" />}
+                  {src && <img src={src} alt={`Raster ${idx}`} className="w-full h-full object-cover" />}
                 </div>
               ))}
             </div>
@@ -121,8 +121,8 @@ export default function AdminProjectPage() {
         <div className="flex h-full flex-col overflow-y-auto p-6 md:p-10 pt-16 md:pt-20">
           <div className="flex items-start justify-between mb-8">
             <div>
-              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-black">Project Editor</h2>
-              <p className="mt-1 text-[9px] font-black uppercase tracking-widest text-black/40 underline decoration-2">Mobile_Ready_Interface</p>
+              <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-black">Projectbewerker</h2>
+              <p className="mt-1 text-[9px] font-black uppercase tracking-widest text-black/40 underline decoration-2">Mobiel_Geschikte_Interface</p>
             </div>
             <button onClick={() => setIsEditorOpen(false)} className="p-2 bg-black text-white rounded-full">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M6 6L18 18M18 6L6 18" /></svg>
@@ -146,11 +146,11 @@ export default function AdminProjectPage() {
             </div>
 
             <div className="space-y-3 border-t-2 border-black/10 pt-6">
-              <label className="text-[9px] font-black uppercase text-black/60 block mb-4 italic">Grid Media Management</label>
+              <label className="text-[9px] font-black uppercase text-black/60 block mb-4 italic">Rastermedia-beheer</label>
               <div className="grid grid-cols-1 gap-3">
                 {form.gridImages.map((_, idx) => (
                   <div key={idx} className="flex flex-col gap-1 p-2 border border-black/5">
-                    <span className="text-[8px] font-black opacity-40">SLOT #{idx + 1}</span>
+                    <span className="text-[8px] font-black opacity-40">VAK #{idx + 1}</span>
                     <input type="file" onChange={(e) => handleFileUpload(e, idx)} className="text-[9px] file:bg-white file:border file:border-black file:text-black" />
                   </div>
                 ))}

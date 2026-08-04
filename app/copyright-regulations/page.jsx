@@ -2,54 +2,54 @@
 export default function CopyrightRegulations() {
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Copyright Regulations</h1>
+      <h1 className="text-2xl font-bold mb-4">Auteursrechtregels</h1>
         
       <p className="mb-6 text-gray-600">
-        We respect intellectual property rights and expect our users to do the same. This page outlines our copyright policies, how to handle copyrighted material, and your responsibilities as a user.
+        We respecteren intellectuele eigendomsrechten en verwachten dat onze gebruikers dat ook doen. Deze pagina beschrijft ons auteursrechtbeleid, hoe je met auteursrechtelijk materiaal omgaat en wat je verantwoordelijkheden als gebruiker zijn.
       </p>
 
       <div className="space-y-6">
 
         <div className="p-4 bg-white rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2">General Policy</h2>
+          <h2 className="text-xl font-semibold mb-2">Algemeen beleid</h2>
           <p className="text-gray-600">
-            All content on this website, including text, images, videos, and software, is protected by copyright laws unless otherwise stated. Unauthorized use or distribution of copyrighted material is strictly prohibited.
+            Alle inhoud op deze website, waaronder tekst, afbeeldingen, video’s en software, is beschermd door auteursrecht tenzij anders vermeld. Ongeoorloofd gebruik of verspreiding van auteursrechtelijk beschermd materiaal is strikt verboden.
           </p>
         </div>
 
         <div className="p-4 bg-white rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2">Fair Use & Permissions</h2>
+          <h2 className="text-xl font-semibold mb-2">Eerlijk gebruik en toestemmingen</h2>
           <p className="text-gray-600">
-            Certain uses of copyrighted material may fall under fair use, such as commentary, criticism, or educational purposes. For other uses, you must obtain written permission from the copyright owner.
+            Bepaalde vormen van gebruik kunnen onder eerlijk gebruik vallen, zoals commentaar, kritiek of educatieve doeleinden. Voor ander gebruik moet je schriftelijke toestemming krijgen van de auteursrechthebbende.
           </p>
         </div>
 
         <div className="p-4 bg-white rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2">Reporting Copyright Infringement</h2>
+          <h2 className="text-xl font-semibold mb-2">Auteursrechtinbreuk melden</h2>
           <p className="text-gray-600">
-            If you believe your work has been used in violation of copyright laws on this website, please contact us immediately with a detailed report. We will investigate and take appropriate action.
+            Als je denkt dat jouw werk op deze website in strijd met het auteursrecht is gebruikt, neem dan direct contact met ons op met een gedetailleerde melding. Wij onderzoeken dit en nemen gepaste maatregelen.
           </p>
         </div>
 
         <div className="p-4 bg-white rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2">User Responsibilities</h2>
+          <h2 className="text-xl font-semibold mb-2">Verantwoordelijkheden van gebruikers</h2>
           <p className="text-gray-600">
-            Users must not upload or share content that infringes on copyright. By using this website, you agree to comply with copyright laws and respect the intellectual property of others.
+            Gebruikers mogen geen inhoud uploaden of delen die inbreuk maakt op auteursrechten. Door deze website te gebruiken, ga je akkoord met de auteursrechtwetgeving en respecteer je de intellectuele eigendom van anderen.
           </p>
         </div>
 
         <div className="p-4 bg-white rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2">Licensing Information</h2>
+          <h2 className="text-xl font-semibold mb-2">Licentie-informatie</h2>
           <p className="text-gray-600">
-            Some content may be available under licenses that allow reuse, modification, or distribution. Always check the license terms before using such material.
+            Sommige inhoud kan beschikbaar zijn onder licenties die hergebruik, wijziging of verspreiding toestaan. Controleer altijd de licentievoorwaarden voordat je dergelijk materiaal gebruikt.
           </p>
         </div>
 
       </div>
 
       <div className="mt-8 flex flex-col sm:flex-row gap-4">
-        <button className="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition">Acknowledge</button>
-        <button className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-300 transition">Learn More</button>
+        <button className="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition">Bevestigen</button>
+        <button className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-300 transition">Meer informatie</button>
       </div>
     </div>
 

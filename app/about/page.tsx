@@ -25,7 +25,7 @@ export default function AboutPage() {
         <header className="flex flex-col md:flex-row justify-between items-start border-b border-black pb-6 md:pb-8 mb-8 md:mb-12">
           <div className="relative w-full md:w-auto mb-4 md:mb-0">
             <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-[0.8] md:leading-[0.85]">
-              ABOUT<br />ME
+              OVER<br />MIJ
             </h1>
             {/* Name in script font removed per request */}
           </div>
@@ -36,7 +36,7 @@ export default function AboutPage() {
           
           {/* Linker Kolom: Bio */}
           <div className="md:col-span-7 space-y-6 md:space-y-8">
-            <h2 className="text-lg md:text-2xl font-black border-b border-black inline-block pb-1">Manifesto</h2>
+            <h2 className="text-lg md:text-2xl font-black border-b border-black inline-block pb-1">Manifest</h2>
             
             <div className="space-y-6">
               <p className="text-xl sm:text-2xl md:text-3xl font-bold leading-[1.1] tracking-tight">
@@ -60,10 +60,10 @@ export default function AboutPage() {
             style={{ backgroundColor: accentColor, color: '#000000' }}
           >
             <section>
-              <h3 className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] opacity-60 mb-4 md:mb-6 uppercase">Expertise Systems</h3>
+              <h3 className="font-mono text-[8px] md:text-[10px] tracking-[0.3em] opacity-60 mb-4 md:mb-6 uppercase">Expertisesystemen</h3>
               <ul className="space-y-3 md:space-y-4 font-black text-sm sm:text-base md:text-xl tracking-tighter">
                 <li className="flex justify-between border-b border-black/20 pb-2">
-                  <span>AI Creative</span>
+                  <span>AI-creatie</span>
                   <span className="italic">●</span>
                 </li>
                 <li className="flex justify-between border-b border-black/20 pb-2">
@@ -71,11 +71,11 @@ export default function AboutPage() {
                   <span className="italic">●</span>
                 </li>
                 <li className="flex justify-between border-b border-black/20 pb-2">
-                  <span>Concept Development</span>
+                  <span>Conceptontwikkeling</span>
                   <span className="italic">●</span>
                 </li>
                 <li className="flex justify-between border-b border-black/20 pb-2">
-                  <span>Interactive Spatial Surfaces</span>
+                  <span>Interactieve ruimtelijke oppervlakken</span>
                   <span className="italic">●</span>
                 </li>
               </ul>

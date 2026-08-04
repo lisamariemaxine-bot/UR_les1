@@ -2,61 +2,61 @@
 export default function TermsOfAgreement() {
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Terms of Agreement</h1>
+      <h1 className="text-2xl font-bold mb-4">Gebruiksvoorwaarden</h1>
           
         <p className="mb-6 text-gray-600">
-          Please read these Terms of Agreement carefully before using our website or services. By accessing or using our site, you agree to comply with these terms and conditions.
+          Lees deze gebruiksvoorwaarden zorgvuldig voordat je onze website of diensten gebruikt. Door onze site te bezoeken of te gebruiken, ga je akkoord met deze voorwaarden.
         </p>
 
         <div className="space-y-6">
 
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">Acceptance of Terms</h2>
+            <h2 className="text-xl font-semibold mb-2">Aanvaarding van voorwaarden</h2>
             <p className="text-gray-600">
-              By using our website, you agree to be bound by these Terms of Agreement, as well as any additional terms, policies, or guidelines posted on the site.
+              Door onze website te gebruiken, ga je akkoord met deze gebruiksvoorwaarden en met eventuele aanvullende voorwaarden, beleidsregels of richtlijnen die op de site zijn geplaatst.
             </p>
           </div>
 
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">User Responsibilities</h2>
+            <h2 className="text-xl font-semibold mb-2">Verantwoordelijkheden van gebruikers</h2>
             <p className="text-gray-600">
-              Users must provide accurate information, respect the rights of others, and refrain from using the site for unlawful purposes. Any violation may result in suspension or termination of access.
+              Gebruikers moeten correcte informatie verstrekken, de rechten van anderen respecteren en de site niet gebruiken voor onwettige doeleinden. Overtredingen kunnen leiden tot opschorting of beëindiging van toegang.
             </p>
           </div>
 
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">Account Registration</h2>
+            <h2 className="text-xl font-semibold mb-2">Accountregistratie</h2>
             <p className="text-gray-600">
-              Some features may require account registration. You are responsible for maintaining the confidentiality of your account credentials and for all activities conducted under your account.
+              Sommige functies vereisen een accountregistratie. Je bent verantwoordelijk voor de vertrouwelijkheid van je accountgegevens en voor alle activiteiten die via je account plaatsvinden.
             </p>
           </div>
 
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">Intellectual Property</h2>
+            <h2 className="text-xl font-semibold mb-2">Intellectuele eigendom</h2>
             <p className="text-gray-600">
-              All content on this site is protected by copyright, trademark, or other intellectual property laws. Users may not copy, distribute, or modify content without proper authorization.
+              Alle inhoud op deze site is beschermd door auteursrecht, merkenrecht of andere wetgeving rond intellectuele eigendom. Gebruikers mogen inhoud niet kopiëren, verspreiden of wijzigen zonder geldige toestemming.
             </p>
           </div>
 
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">Limitation of Liability</h2>
+            <h2 className="text-xl font-semibold mb-2">Beperking van aansprakelijkheid</h2>
             <p className="text-gray-600">
-              We are not liable for any damages arising from the use of this website or services, including direct, indirect, incidental, or consequential losses.
+              Wij zijn niet aansprakelijk voor schade die voortvloeit uit het gebruik van deze website of diensten, inclusief directe, indirecte, incidentele of gevolgschade.
             </p>
           </div>
 
           <div className="p-4 bg-white rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-2">Modifications of Terms</h2>
+            <h2 className="text-xl font-semibold mb-2">Wijzigingen van voorwaarden</h2>
             <p className="text-gray-600">
-              We reserve the right to update or modify these Terms of Agreement at any time. Continued use of the site after changes constitutes acceptance of the updated terms.
+              Wij behouden ons het recht voor om deze gebruiksvoorwaarden op elk moment te wijzigen. Verder gebruik van de site na wijzigingen betekent dat je de bijgewerkte voorwaarden accepteert.
             </p>
           </div>
 
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-4">
-          <button className="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition">Accept Terms</button>
-          <button className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-300 transition">Decline</button>
+          <button className="flex-1 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition">Voorwaarden accepteren</button>
+          <button className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-300 transition">Weigeren</button>
         </div>
 
     </div>

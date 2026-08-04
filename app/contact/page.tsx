@@ -44,7 +44,7 @@ export default function ContactForm() {
         <div className="relative w-full">
           {/* Tekstgrootte aangepast voor mobiel */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-none">
-            GET IN<br />TOUCH
+            NEEM<br />CONTACT OP
           </h1>
         </div>
       </header>
@@ -53,14 +53,14 @@ export default function ContactForm() {
         {/* Linker Kolom: Info */}
         <div className="md:col-span-6 space-y-8 md:space-y-10">
           <section>
-            <h2 className="text-xs font-bold tracking-[0.2em] text-black/40 mb-6 md:mb-8">Information</h2>
+            <h2 className="text-xs font-bold tracking-[0.2em] text-black/40 mb-6 md:mb-8">Informatie</h2>
             <div className="space-y-6 md:space-y-8">
               <div>
-                <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Electronic Mail</p>
+                <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">E-mail</p>
                 <p className="text-base md:text-lg font-bold tracking-tight">HELLO@EMAIL.COM</p>
               </div>
               <div>
-                <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Geographic Base</p>
+                <p className="text-[9px] font-mono tracking-widest opacity-40 mb-1">Locatie</p>
                 <p className="text-base md:text-lg font-bold tracking-tight">ANTWERP, BE</p>
               </div>
             </div>
@@ -77,11 +77,11 @@ export default function ContactForm() {
         <div className="md:col-span-6 border border-black/10 p-5 md:p-10 bg-black/5 md:bg-transparent">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-1">
-              <Label className="text-[9px] font-mono tracking-widest opacity-40">NAME</Label>
+              <Label className="text-[9px] font-mono tracking-widest opacity-40">NAAM</Label>
               <Input
                 {...form.register("name")}
                 className="rounded-none border-0 border-b border-black/10 bg-transparent px-0 text-sm font-bold uppercase focus-visible:ring-0 focus-visible:border-black transition-colors placeholder:text-black/20"
-                placeholder="YOUR NAME"
+                placeholder="JOUW NAAM"
               />
               {form.formState.errors.name && (
                 <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-tighter">{form.formState.errors.name.message}</p>
@@ -89,12 +89,12 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[9px] font-mono tracking-widest opacity-40">EMAIL</Label>
+              <Label className="text-[9px] font-mono tracking-widest opacity-40">E-MAIL</Label>
               <Input
                 type="email"
                 {...form.register("email")}
                 className="rounded-none border-0 border-b border-black/10 bg-transparent px-0 text-sm font-bold uppercase focus-visible:ring-0 focus-visible:border-black transition-colors placeholder:text-black/20"
-                placeholder="EMAIL@PROVIDER.COM"
+                placeholder="EMAIL@PROVIDER.NL"
               />
               {form.formState.errors.email && (
                 <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-tighter">{form.formState.errors.email.message}</p>
@@ -102,12 +102,12 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-[9px] font-mono tracking-widest opacity-40">MESSAGE</Label>
+              <Label className="text-[9px] font-mono tracking-widest opacity-40">BERICHT</Label>
               <Textarea
                 rows={4}
                 {...form.register("message")}
                 className="rounded-none border-0 border-b border-black/10 bg-transparent px-0 text-sm font-bold uppercase focus-visible:ring-0 focus-visible:border-black transition-colors resize-none placeholder:text-black/20"
-                placeholder="YOUR INQUIRY..."
+                placeholder="JOUW VRAAG..."
               />
               {form.formState.errors.message && (
                 <p className="text-[9px] font-bold text-red-500 mt-1 uppercase tracking-tighter">{form.formState.errors.message.message}</p>
@@ -119,7 +119,7 @@ export default function ContactForm() {
                          hover:bg-[#125503] active:bg-[#C3F380] active:text-[#125503]"
               disabled={loading}
             >
-              {loading ? "TRANSMITTING..." : "SEND MESSAGE"}
+              {loading ? "VERSTUREN..." : "BERICHT VERSTUREN"}
             </Button>
           </form>
         </div>

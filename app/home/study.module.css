@@ -1,0 +1,17 @@
+.section {
+  background: #fff;
+  color: #000;
+  transition: background-color 450ms ease, color 450ms ease;
+}
+.section[data-active='true'] { background: #171a19; color: #fafaf5; }
+.title { min-height: 1.5em; }
+.section[data-active='true'] .title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -.05em;
+  text-transform: none;
+}
+.title span { display: block; margin-top: .6rem; font-family: Arial, sans-serif; font-size: .2em; font-weight: 400; font-style: normal; letter-spacing: .18em; text-transform: uppercase; }
+.section[data-active='true'] > p { font-family: Georgia, 'Times New Roman', serif; }
+@media (prefers-reduced-motion: reduce) { .section { transition: none; } }

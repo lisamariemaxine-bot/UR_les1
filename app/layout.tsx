@@ -1,10 +1,10 @@
 import { AppToaster } from "@/components/ui/toast"
-import GlobalNavbar from "@/components/GlobalNavbar"
 
 
 import Script from "next/script"
 import GoogleAnalyticsTracker from "@/components/GoogleAnalyticsTracker"
 import ClientPageWrapper from "@/components/ClientPageWrapper"
+import GlobalNavbar from "@/components/GlobalNavbar"
 
 import "./globals.css"
 
@@ -42,7 +42,7 @@ export default function RootLayout({
 
         <GlobalNavbar />
 
-        <div className="px-4 py-6 md:p-20 mx-auto mt-6">
+        <div className="px-4 py-6 md:p-20 mx-auto mt-16">
           <ClientPageWrapper>
             {children}
           </ClientPageWrapper>

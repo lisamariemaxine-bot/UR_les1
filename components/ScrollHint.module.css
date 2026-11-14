@@ -1,0 +1,26 @@
+.hint {
+  position: fixed;
+  z-index: 110;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgb(0 0 0 / 14%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 94%);
+  color: black;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 12%);
+  cursor: pointer;
+  animation: reveal 350ms ease-out both;
+}
+.hint svg { animation: float-down 2s ease-in-out infinite; }
+.hint:hover { background: white; }
+.hint:focus-visible { outline: 2px solid black; outline-offset: 4px; }
+@keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
+@keyframes float-down { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+@media (prefers-reduced-motion: reduce) {
+  .hint, .hint svg { animation: none; }
+}

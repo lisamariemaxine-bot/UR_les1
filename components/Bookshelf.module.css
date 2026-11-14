@@ -1,0 +1,99 @@
+.shelf {
+  position: fixed;
+  top: 4rem;
+  bottom: 16px;
+  left: 0;
+  width: 50%;
+  transform: scale(0.55);
+  transform-origin: center bottom;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(4px, 0.6vw, 10px);
+  padding: clamp(12px, 2vw, 32px);
+  padding-top: 40px;
+  background: transparent;
+  container-type: inline-size;
+}
+.book {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--height);
+  background: black;
+  color: white;
+  box-shadow: 0 18px 25px rgb(0 0 0 / 12%);
+  transition: flex-grow 500ms ease, background-color 300ms ease, transform 400ms ease;
+  text-decoration: none;
+}
+.book:first-child { flex-grow: 1.5; }
+.book:last-child { transform: rotate(2deg); transform-origin: bottom center; }
+.spine {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(12px, 3cqw, 32px) 0;
+  transition: opacity 160ms ease;
+  overflow: hidden;
+}
+.subtitle {
+  writing-mode: vertical-rl;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(9px, 2.6cqw, 24px);
+  white-space: nowrap;
+}
+.label {
+  writing-mode: vertical-rl;
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: clamp(13px, 4cqw, 36px);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+}
+.number {
+  margin-top: auto;
+  padding-top: 16px;
+  font: italic bold clamp(12px, 2.8cqw, 24px) Georgia, serif;
+}
+.cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(10px, 3cqw, 30px);
+  color: #cf3c0b;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+.coverLabel {
+  padding-bottom: 14px;
+  border-bottom: 1px solid currentColor;
+  font: italic bold clamp(12px, 3.6cqw, 32px) Georgia, serif;
+}
+.coverTitle {
+  margin: auto 0;
+  font-size: clamp(15px, 5.5cqw, 48px);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  overflow-wrap: anywhere;
+}
+.open { font-size: clamp(9px, 1.8cqw, 14px); font-weight: 700; }
+.book:focus-visible { outline: 3px solid #cf3c0b; outline-offset: 3px; }
+.book:focus-visible, .book:hover {
+  flex-grow: 5;
+  background: var(--cover);
+  transform: rotate(0deg);
+}
+.book:focus-visible .spine, .book:hover .spine { opacity: 0; }
+.book:focus-visible .cover, .book:hover .cover { opacity: 1; transition-delay: 160ms; }
+@media (prefers-reduced-motion: reduce) {
+  .book, .spine, .cover { transition: none; }
+}

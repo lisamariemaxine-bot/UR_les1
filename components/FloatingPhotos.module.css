@@ -1,0 +1,29 @@
+.gallery {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(100% + 100dvh);
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+}
+.photo { position: absolute; top: 0; left: 0; border: 0; padding: 0; background: transparent; pointer-events: auto; cursor: zoom-in; }
+.photo:focus-visible { outline: 2px solid black; outline-offset: 4px; }
+.image {
+  object-fit: contain;
+}
+.pause {
+  position: absolute;
+  z-index: 80;
+  left: 42px;
+  bottom: 42px;
+  padding: 8px 12px;
+  color: black;
+  background: rgb(255 255 255 / 92%);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pause:hover { background: white; }
+.pause:focus-visible { outline: 2px solid black; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .pause { display: none; } }

@@ -1,0 +1,41 @@
+.background {
+  position: fixed;
+  inset: 4rem 0 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: #f8f5ec;
+  contain: paint;
+}
+.layer { position: absolute; inset: -20%; }
+.warm, .cool { position: absolute; inset: 0; }
+.warm {
+  background:
+    radial-gradient(ellipse at 65% 35%, #ff5519a6 0%, #ff551955 19%, #ff551900 48%),
+    radial-gradient(ellipse at 26% 48%, #ffbe2ba6 0%, #ffbe2b55 20%, #ffbe2b00 48%),
+    radial-gradient(ellipse at 77% 86%, #de7a0066 0%, #de7a0000 34%);
+  animation: warmDrift 24s ease-in-out infinite alternate;
+}
+.cool {
+  background:
+    radial-gradient(ellipse at 25% 83%, #aab5e1d9 0%, #aab5e173 19%, #aab5e100 43%),
+    radial-gradient(ellipse at 80% 12%, #a811632b 0%, #a8116300 30%);
+  animation: coolDrift 31s ease-in-out infinite alternate;
+}
+.paperLight {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 97% 50%, #faf8f0d9, #faf8f000 56%),
+    linear-gradient(180deg, #faf8f04d, #faf8f000 35%, #faf8f052);
+}
+@keyframes warmDrift {
+  from { transform: translate3d(-3%, 2%, 0) scale(1); }
+  to { transform: translate3d(5%, -4%, 0) scale(1.08); }
+}
+@keyframes coolDrift {
+  from { transform: translate3d(4%, 0, 0) scale(1.05); }
+  to { transform: translate3d(-4%, 5%, 0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .warm, .cool { animation: none; }
+}

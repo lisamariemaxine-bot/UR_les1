@@ -1,0 +1,9 @@
+.word { white-space: nowrap; }
+.slot, .glyph { display: inline-block; }
+.glyph {
+  color: inherit;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .glyph { transition: none; transform: none !important; }
+}

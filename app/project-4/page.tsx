@@ -14,7 +14,7 @@ export default function Project4Page() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      backgroundColor: 'transparent', 
+      backgroundColor: '#F8F6F0',
       display: 'flex', 
       flexDirection: 'column',
       alignItems: 'center', 

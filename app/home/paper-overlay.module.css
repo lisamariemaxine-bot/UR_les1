@@ -1,0 +1,37 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+  mix-blend-mode: normal;
+}
+
+.texture {
+  position: absolute;
+  inset: -80px -8%;
+  container-type: size;
+}
+
+.texture::before,
+.texture::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100cqh;
+  height: 100cqw;
+  background: url('/_backup_images_2026-05-17/21eceda46c79b028fc192623aae2d490.jpg') center / cover no-repeat;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.texture::before {
+  opacity: 0.17;
+}
+
+.texture::after {
+  /* Only the bright creases catch light; the flat plastic remains transparent. */
+  filter: url('/plastic-highlights.svg#folds');
+  opacity: 0.48;
+}

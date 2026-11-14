@@ -1,0 +1,20 @@
+.portfolio {
+  background-image:
+    url('/palette-grain.svg'),
+    radial-gradient(ellipse at 0% 8%, #3a1e66 0%, #8752b0 22%, #cda8e2 55%, #e4c9f0 100%),
+    radial-gradient(ellipse at 100% 35%, #ea6e4b 0%, #f58b39 28%, #faf26f 65%, #fff7a1 100%),
+    radial-gradient(ellipse at 0% 80%, #d653a9 0%, #d980bb 28%, #abe3d2 65%, #c4f0df 100%);
+  background-size:
+    220px 220px,
+    100% var(--intro-end, 200dvh),
+    100% calc(var(--study-end, 300dvh) - var(--intro-end, 200dvh)),
+    100% calc(var(--portfolio-height, 700dvh) - var(--study-end, 300dvh));
+  background-position:
+    0 0,
+    0 0,
+    0 var(--intro-end, 200dvh),
+    0 var(--study-end, 300dvh);
+  background-attachment: local;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+  background-blend-mode: soft-light, normal, normal, normal;
+}

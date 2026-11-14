@@ -1,0 +1,19 @@
+.photo {
+  object-fit: cover;
+  object-position: left center;
+}
+.glitch { animation: intro-glitch 1s steps(1, end) both; }
+
+@keyframes intro-glitch {
+  0%, 100% { opacity: 1; filter: none; transform: none; }
+  12% { opacity: 0.4; filter: contrast(1.6); transform: scale(1.035) translateX(-5px); }
+  22% { opacity: 0.65; filter: contrast(1.25); transform: scale(1.035) translate(5px, -2px); }
+  32% { opacity: 1; filter: none; transform: none; }
+  58% { opacity: 0.4; filter: contrast(1.5); transform: scale(1.035) translate(4px, 2px); }
+  69% { opacity: 0.7; filter: contrast(1.2); transform: scale(1.035) translateX(-4px); }
+  80% { opacity: 1; filter: none; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch { animation: none; }
+}

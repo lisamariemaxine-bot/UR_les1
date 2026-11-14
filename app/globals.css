@@ -5,6 +5,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.paper-background {
+  background-image: url('/paper-texture.svg');
+  background-repeat: repeat;
+  background-size: 600px 600px;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
